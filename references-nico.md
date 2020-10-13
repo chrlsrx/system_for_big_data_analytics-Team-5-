@@ -53,6 +53,7 @@ algo
 Tadeusz Kobus, Maciej Kokociński, Paweł T. Wojciechowski
 https://arxiv.org/abs/1907.00748
 
-
+##P.S:
+The book we have for the course contains a whole chapter for transactions and it's better then the slides of the teacher.
 
 
