@@ -10,14 +10,17 @@ public class DataGeneration {
 	private ArrayList<Integer> items;
 	private ArrayList<Integer> ol_suppliers;
 	private ArrayList<Integer> ol_identifiers;
-	private double ol_quantity;
+	private ArrayList<Double> ol_quantity;
 	private Date o_entry ;
 	public DataGeneration(int w_id)
 	{
 		this.w_id = w_id;
 		this.d_id = (int)(Math.random() * (10)) + 1;
-		this.ol_quantity = (Math.random() * (10)) + 1;
 		this.number_items = (int)(Math.random() * (10)) + 5;
+		for(int i =0; i <number_items;i++)
+		{
+			this.ol_quantity.add((Math.random() * (10)) + 1);
+		}
 		for(int i = 0; i < number_items;i++)
 		{   
 			int x = (int)(Math.random()*(100))+1;
