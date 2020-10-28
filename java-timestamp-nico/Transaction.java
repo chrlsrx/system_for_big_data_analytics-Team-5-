@@ -40,7 +40,7 @@ public class Transaction {
 	}
 
 	public boolean is_finished() {
-		return this.ts_start_finish == 0;
+		return this.ts_start_finish > 0;
 	}
 
 	public float get_ts_start_read() {
@@ -57,6 +57,26 @@ public class Transaction {
 
 	public float get_ts_start_finish() {
 		return this.ts_start_finish;
+	}
+
+	public ArrayList<Target> get_write_set(){
+		return this.write_set;
+	}
+
+	public ArrayList<Target> get_read_set(){
+		return this.read_set;
+	}
+
+	public ArrayList<Target> list_intersect(list1, list2){
+		// return the common elements of list1 and list2
+		ArrayList<Target> intersect = new ArrayList<Target>();
+		for (int i=0; i<list1.size(); i++){
+			// If this list element is in the other list
+			if list2.contains(list1.get(i)){
+				intersect.add(list1.get(i))
+			}
+		}
+		return intersect
 	}
 
 	private void init_all_targets() {
@@ -139,20 +159,32 @@ public class Transaction {
 			boolean test_2 = false;
 			boolean test_3 = false;
 			// Test 1
-			if (transaction.get_ts_finished() > 0) {
+			if (transaction.is_finished()) {
 				test_1 = transaction.get_ts_start_finish() < this.ts_start_finish;
 			}
 
-			// Test 2
-
 			// Test 3
+			if (transaction.get_ts_start_validate() > 0){
+				test_2 = transaction.get_ts_start_validate() < this.ts_start_validate && this.list_intersect(transaction.get_write_set(), this.read_set).size() == 0 && this.list_intersect(transaction.get_write_set(), this.write_set).size() == 0;
+			}
+
+			// Test 2
+			if (transaction.is_finished()){
+				// In the slides, it said to check ts_start_write. 
+				// We, however, never have a ts_start_write since we are in the validation phase.
+				// Consequently, we replace ts_start_write by the current timestamp.
+				// That's why we put this test last. 
+				test_2 = transaction.get_ts_start_finish() < System.currentTimeMillis() && this.list_intersect(transaction.get_write_set(), this.read_set).size() == 0;
+			}
 
 			// Did any test pass ?
 			any_test_passed = test_1 || test_2 || test_3;
 			if (!any_test_passed) {
+				// Every test failed. There is a conflict. Validation failed. Return False.
 				return false;
 			}
 		}
+		// We succeeded in every test. Return true. 
 		return true;
 	}
 
@@ -170,6 +202,7 @@ public class Transaction {
 		}
 		bool success = false;
 		if (this.phase == phase_READ) {
+			System.out.println("Reading " + this.id);
 			success = this.read();
 			if (success) {
 				this.phase = phase_VALIDATE;
@@ -177,17 +210,27 @@ public class Transaction {
 			}
 
 		} else if (this.phase == phase_VALIDATE) {
+			System.out.println("Validating " + this.id);
+			success = this.validate();
 			if (success) {
 				this.phase = phase_WRITE;
 				this.ts_start_write = System.currentTimeMillis();
 			}
+			else {
+				// Validation failed : restart the transaction. 
+				System.out.println("Validation failed for " + this.id);
+				this.restart();
+			}
 		} else if (this.phase == phase_WRITE) {
+			System.out.println("Writing " + this.id);
+			success = this.write();
 			if (success) {
 				this.phase = phase_FINISH;
 				this.ts_start_finish = System.currentTimeMillis();
 			}
 
 		} else {
+			System.out.println("Starting " + this.id);
 			this.phase = phase_READ;
 			this.ts_start_read = System.currentTimeMillis();
 			return true;
@@ -197,6 +240,7 @@ public class Transaction {
 
 	public void restart() {
 		// Restart the operation
+		System.out.println("Restarting " + this.id);
 		this.operation_iter = 0;
 		this.phase = "";
 		this.ts_start_read = 0;
