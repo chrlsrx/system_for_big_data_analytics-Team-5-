@@ -3,6 +3,12 @@ package map670e;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * WARNING : THIS CLASS IS ONLY USED IN THE PYTHON PROTOTYPE (REPLACED BY THE DB IN THE "TRUE" VERSION)
+ */
+
+
+
 public class Order {
 	private List<Integer> df ; // find a proper data structure to replace the df (depends on kind of database)
 						       // this one only suites to the prototype

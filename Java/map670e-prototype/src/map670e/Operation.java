@@ -1,7 +1,28 @@
 package map670e;
 
-import java.util.ArrayList;
-import java.util.List;
+import database.Database;
+
+public class Operation {
+	
+	protected int id ;
+	protected Database db ;
+	protected boolean has_applied ;
+	
+	public Operation(final int id, Database db) {
+		this.id = id ;
+		this.db = db ;
+		this.has_applied = false ;
+	}
+	
+	public boolean get_has_applied() {
+		return this.has_applied ;
+	}
+	
+	//générer les tostring, hash, equals
+}
+
+
+/* OLD CLASS
 
 public class Operation {
 	private int id ;
@@ -56,3 +77,4 @@ public class Operation {
 	
 	//générer les tostring, hash, equals
 }
+*/

@@ -27,13 +27,18 @@ public class NewOrder_Locks_Temp {
 	/* 
 	 * This whole method could become an operation
 	 * 		-> if "readCustomer" = new class which extends Operation, then also need 3 versions
-	 * 		   of it (for each algo) => many classes, but maybe useful, and keep existing structure 
+	 * 		   of it (for each algo) => many classes, but maybe useful, and keep existing structure
+	 * 
+	 * Or it could be a method of Operation_Locked.
 	 * 
 	 * Then in NewOrder_Locks, we would just need (following the python prototype) :
 	 * 		-> the super() constructor + attribute Lock manager
 	 * 		-> a method to add the operations to the operation list/buffer
 	 * 		-> a method which executes an operation at each step
 	 * 		-> Later (when multi-threading), we'll probably add a Thread attribute in transaction
+	 * 
+	 * 
+	 * 
 	 */
 	public boolean readCustomer(int c_id, int c_d_id, int c_w_id) {
 		
@@ -43,6 +48,7 @@ public class NewOrder_Locks_Temp {
 		int gosht_hash = gosht_customer.hashCode() ;
 		if (!this.db.searchCustomer(gosht_hash)) {
 			// Abort
+			System.out.println("The customer " + gosht_customer.toString() + "was not found");
 			return false ;
 		}
 		

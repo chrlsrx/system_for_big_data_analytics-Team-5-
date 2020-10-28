@@ -1,8 +1,9 @@
 package database;
 
 import java.util.HashMap;
+import java.util.Objects;
 
-public class District {
+public class District implements DatabaseConstants {
 	
 	private final int d_id ;
 	private final int d_w_id ;
@@ -25,11 +26,33 @@ public class District {
 		this.d_clients = new HashMap<Integer, Customer>() ;
 	}
 	
-	// If we want to avoid the creation in cascade of the instances (otherwise, put in constructor)
-	public void populate(int num) {
+	public HashMap<Integer, Customer> populate_clients(int num) {
+		// If we want to avoid the creation in cascade of the instances
 		for (int i = 0; i < num; i++) {
-			this.d_clients.put(i, new Customer(i, this.d_id)) ;
+			Customer ctm = new Customer(i, this.d_id, this.d_w_id) ;
+			this.d_clients.put(ctm.hashCode(), ctm) ;
 		}
+		return this.d_clients ;
 	}
+
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(d_id, d_w_id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof District)) {
+			return false;
+		}
+		District other = (District) obj;
+		return d_id == other.d_id && d_w_id == other.d_w_id;
+	}
+	
+
 
 }

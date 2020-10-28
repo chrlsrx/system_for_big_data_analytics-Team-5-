@@ -3,6 +3,8 @@ package map670e;
 import java.util.ArrayList;
 import java.util.List;
 
+/* The code bellow has to be adapted, and may not even be need since we'll ahve a newOrderTransaction*/
+
 public class Transaction {
 	private int id;
 	private List<Operation> operation_list;
