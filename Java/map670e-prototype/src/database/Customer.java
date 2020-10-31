@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class Customer {
+public class Customer implements DatabaseConstants{
 	
 	// The warehouse id is useless : already in district
 	
@@ -23,10 +23,10 @@ public class Customer {
 	private String c_phone ;		// useless ? t16
 	private Date c_since ;
 	private String c_credit ;		// size 2 "GC"=good, "BC"=bad
-	private float c_credit_lim ;
-	private float c_discount ;
-	private float c_balance ;
-	private float c_ytd_payment ;
+	private double c_credit_lim ;
+	private double c_discount ;
+	private double c_balance ;
+	private double c_ytd_payment ;
 	private int c_payment_cnt ;
 	private int c_delivry_cnt ;
 	private String c_data ;			// useless ? t500
@@ -38,6 +38,26 @@ public class Customer {
 		this.c_d_id = c_d_id ;
 		this.c_w_id = c_w_id ;
 		this.c_orders = new HashMap<Integer, Order>() ;
+		
+		this.c_first = information[(int) Math.random()*3];
+		this.c_middle = information[(int) Math.random()*3];
+		this.c_last = information[(int) Math.random()*3];
+		this.c_street1 = streets1[(int) Math.random()*3];
+		this.c_street2 = streets2[(int) Math.random()*3];
+		this.c_city = cities[(int) Math.random()*3];
+		this.c_state = states[(int) Math.random()*3];
+		this.c_zip = "9512" + Integer.toString((int) Math.random() * 9);
+		this.c_phone = phone_nb[(int) Math.random()*3];
+		this.c_since = new Date();
+		this.c_credit = credits[(int) ((int) Math.random()*1.5)];
+		this.c_credit_lim = Math.random()*250000;
+		this.c_discount = Math.random()*1000;
+		this.c_balance = Math.random()*100000;
+		this.c_ytd_payment = Math.random()*2500;
+		this.c_payment_cnt = (int)Math.random()*1000;
+		this.c_delivry_cnt = (int)Math.random()*1000;
+		this.c_data = information[(int) Math.random()*3];
+		
 	}
 	
 	@Override
