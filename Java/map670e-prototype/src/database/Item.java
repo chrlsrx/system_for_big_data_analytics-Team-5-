@@ -1,5 +1,6 @@
 package database;
 
+
 import java.util.HashMap;
 
 
@@ -9,14 +10,33 @@ public class Item {
 	private String i_name;
 	private float i_price;
 	private String i_data;
-	private static HashMap<Integer, Integer> items = new HashMap<Integer,Integer>() ;
-	public Item(int i,int j)
+	
+	public Item(int id)
 	{
-		this.id  = i;
-		this.i_im_id = j;
-		this.items.put(i, j);
+		this.id  = id;
+		
+    }
+	public int get_i_im_id()
+	{
+		return this.i_im_id;
 	}
-	
-	
-
-}
+	public String get_i_name()
+	{
+		return this.i_name;
+	}
+	public String get_i_data()
+	{
+		return this.i_data;
+	}
+	public float get_price()
+	{
+        return this.i_price;
+	}
+	public void set_i_data(String ch)
+	{
+		this.i_data = ch;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}}

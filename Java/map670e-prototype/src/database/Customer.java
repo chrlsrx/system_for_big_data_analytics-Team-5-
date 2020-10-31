@@ -2,16 +2,14 @@ package database;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class Customer {
 	
 	// The warehouse id is useless : already in district
 	
 	private final int c_id ;
-	private final int c_d_id ;
 	private final int c_w_id ;
-	
+	private final int c_d_id;
 	private String c_first ;		// useless ? t16
 	private String c_middle ;		// useless ? t2
 	private String c_last ;			// useless ? t16
@@ -33,13 +31,11 @@ public class Customer {
 	
 	private HashMap<Integer, Order> c_orders ;
 	
-	public Customer(int c_id, int c_d_id, int c_w_id) {
+	public Customer(int c_id,int c_d_id, int c_w_id) {
 		this.c_id = c_id ;
-		this.c_d_id = c_d_id ;
-		this.c_w_id = c_w_id ;
-		this.c_orders = new HashMap<Integer, Order>() ;
+		this. c_w_id = c_w_id ;
+		this.c_d_id = c_d_id;
 	}
-	
 	@Override
 	public int hashCode() {
 		return Objects.hash(c_d_id, c_id, c_w_id);
@@ -56,14 +52,14 @@ public class Customer {
 		Customer other = (Customer) obj;
 		return c_d_id == other.c_d_id && c_id == other.c_id && c_w_id == other.c_w_id;
 	}
-
-	// If we want to avoid the creation in cascade of the instances (otherwise, put in constructor)
-	public void populate(int num) {
-		for (int i = 0; i < num; i++) {
-			this.c_orders.put(i, new Order(i, this.c_id, this.c_d_id, this.c_w_id)) ;
-		}
+	public float get_c_discount()
+	{
+		return this.c_discount;
 	}
-
+	public String get_c_credit()
+	{return this.c_credit;}
+	public String get_c_last(){return this.c_last;}
+	// If we want to avoid the creation in cascade of the instances (otherwise, put in constructor)
 	
 	
 	
