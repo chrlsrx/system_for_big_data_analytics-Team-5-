@@ -49,11 +49,8 @@ public class Stock implements DatabaseConstants{
 		
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(s_i_id, s_w_id);
-	}
-<<<<<<< HEAD
+	
+
 	public float get_s_quantity()
 	{
 		return this.s_quantity;
@@ -119,8 +116,7 @@ public class Stock implements DatabaseConstants{
 	public int hashCode() {
 		return Objects.hash(s_i_id,s_w_id) ;
 	}
-=======
->>>>>>> 5ace64643f14e67fba551e6adba9b71ccc9c9b74
+
 
 	@Override
 	public boolean equals(Object obj) {

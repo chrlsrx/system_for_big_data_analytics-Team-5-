@@ -33,10 +33,10 @@ public class Customer implements DatabaseConstants{
 	
 	public Customer(int c_id,int c_d_id, int c_w_id) {
 		this.c_id = c_id ;
-<<<<<<< HEAD
+
 		this. c_w_id = c_w_id ;
 		this.c_d_id = c_d_id;
-=======
+
 		this.c_d_id = c_d_id ;
 		this.c_w_id = c_w_id ;
 		this.c_orders = new HashMap<Integer, Order>() ;
@@ -60,8 +60,7 @@ public class Customer implements DatabaseConstants{
 		this.c_delivry_cnt = (int)Math.random()*1000;
 		this.c_data = information[(int) Math.random()*3];
 		
->>>>>>> 5ace64643f14e67fba551e6adba9b71ccc9c9b74
-	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(c_d_id, c_id, c_w_id);
