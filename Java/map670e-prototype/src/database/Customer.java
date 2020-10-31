@@ -2,6 +2,7 @@ package database;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class Customer implements DatabaseConstants{
 	
@@ -32,11 +33,8 @@ public class Customer implements DatabaseConstants{
 	private HashMap<Integer, Order> c_orders ;
 	
 	public Customer(int c_id,int c_d_id, int c_w_id) {
+		
 		this.c_id = c_id ;
-
-		this. c_w_id = c_w_id ;
-		this.c_d_id = c_d_id;
-
 		this.c_d_id = c_d_id ;
 		this.c_w_id = c_w_id ;
 		this.c_orders = new HashMap<Integer, Order>() ;
@@ -58,8 +56,8 @@ public class Customer implements DatabaseConstants{
 		this.c_ytd_payment = Math.random()*2500;
 		this.c_payment_cnt = (int)Math.random()*1000;
 		this.c_delivry_cnt = (int)Math.random()*1000;
-		this.c_data = information[(int) Math.random()*3];
-		
+		this.c_data = information[(int) Math.random()*3] ;
+	}
 
 	@Override
 	public int hashCode() {
@@ -77,7 +75,7 @@ public class Customer implements DatabaseConstants{
 		Customer other = (Customer) obj;
 		return c_d_id == other.c_d_id && c_id == other.c_id && c_w_id == other.c_w_id;
 	}
-	public float get_c_discount()
+	public double get_c_discount()
 	{
 		return this.c_discount;
 	}

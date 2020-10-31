@@ -46,9 +46,12 @@ public class Main {
 		
 		Object objj = readcc.apply() ;
 		System.out.println("11 : " + objj);
+		
+		/* Tente de write */
 	}
 	
 	/* Code of python transaction */
+	/*
 	public void run_transactions(int max_iterations,List<Transaction> T )
 	{ 
 		int cu_iter = 0;
@@ -67,5 +70,5 @@ public class Main {
 			
 		}
 	}
-
+	*/
 }

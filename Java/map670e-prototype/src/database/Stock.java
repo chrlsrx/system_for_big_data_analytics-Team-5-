@@ -51,7 +51,7 @@ public class Stock implements DatabaseConstants{
 
 	
 
-	public float get_s_quantity()
+	public double get_s_quantity()
 	{
 		return this.s_quantity;
 	}

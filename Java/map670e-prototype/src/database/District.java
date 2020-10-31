@@ -1,41 +1,30 @@
 package database;
 
 import java.util.HashMap;
+import java.util.Objects;
 
-public class District {
-	
-	private final int d_id ;
-	private final int d_w_id ;
-	private String d_name ;		// useless ? t20
-	private String d_street1 ;	// useless ? t20
-	private String d_street2 ;	// useless ? t20
-	private String d_city ;		// useless ? t20
-	private String d_state ;		// useless ? t2
-	private String d_zip ;		// useless ? t9
+public class District implements DatabaseConstants {
 
-	private float d_tax ;				// useless ?
-	private float d_ytd ;				// useless ?
-	private int d_next_o_id ;
-	private Key_district key_id;
-	                           // useless ?
+	private final int d_id;
+	private final int d_w_id;
+	private String d_name;
+	private String d_street1;
+	private String d_street2;
+	private String d_city;
+	private String d_state;
+	private String d_zip;
+	private double d_tax;
+	private double d_ytd;
+	private int d_next_o_id;
 
-	private double d_tax ;				// useless ?
-	private double d_ytd ;				// useless ?
-	private int d_next_o_id ;		// useless ?
+	private HashMap<Integer, Customer> d_clients;
 
-	
-	private HashMap<Integer, Customer> d_clients ;
-	
-	
 	public District(int d_id, int d_w_id) {
 
-		this.d_id = d_id ;
-		this.d_w_id = d_w_id ;
-		
 		this.d_id = d_id;
 		this.d_w_id = d_w_id;
 		this.d_clients = new HashMap<Integer, Customer>();
-		
+
 		this.d_name = "District" + d_id;
 		this.d_street1 = streets1[(int) (Math.random() * 3)];
 		this.d_street2 = streets2[(int) (Math.random() * 3)];
@@ -44,23 +33,33 @@ public class District {
 		this.d_zip = "9512" + Integer.toString((int) Math.random() * 9);
 		this.d_tax = w_tax_min + Math.random() * (w_tax_max - w_tax_min);
 		this.d_ytd = Math.random() * 365;
-		this.d_next_o_id = (int) Math.random()*10000000;
+		this.d_next_o_id = (int) Math.random() * 10000000;
 
 	}
+
+	// If we want to avoid the creation in cascade of the instances (otherwise, put
+	// in constructor)
+	public HashMap<Integer, Customer> populate_clients(int num) {
+		// If we want to avoid the creation in cascade of the instances
+		for (int i = 0; i < num; i++) {
+			Customer ctm = new Customer(i, this.d_id, this.d_w_id) ;
+			this.d_clients.put(ctm.hashCode(), ctm) ;
+		}
+		return this.d_clients ;
+	}
 	
-	// If we want to avoid the creation in cascade of the instances (otherwise, put in constructor)
-	
-	public float get_d_tax()
-	{
+
+	public double get_d_tax() {
 		return this.d_tax;
 	}
-	public int get_d_next_o_id()
-	{
+
+	public int get_d_next_o_id() {
 		return this.d_next_o_id;
 	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(d_id,d_w_id) ;
+		return Objects.hash(d_id, d_w_id);
 	}
 
 	@Override
@@ -74,6 +73,5 @@ public class District {
 		District other = (District) obj;
 		return d_id == other.d_id && d_w_id == other.d_w_id;
 	}
-	
 
 }

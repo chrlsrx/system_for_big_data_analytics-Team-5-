@@ -71,6 +71,4 @@ public class DataGeneration {
 		
 	}
 
-	get_price()
-
 }

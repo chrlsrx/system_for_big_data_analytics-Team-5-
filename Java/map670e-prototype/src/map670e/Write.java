@@ -21,8 +21,8 @@ public class Write extends Operation {
 	 * 		-> but make sure to Xlock it before, since it's a disguised write ;
 	 */
 	
-	private Object target ;
-	private Types target_type ;
+	protected Object target ;
+	protected Types target_type ;
 	
 	public Write(int id, Database db, Object target, Types target_type) {
 		super(id, db) ;
