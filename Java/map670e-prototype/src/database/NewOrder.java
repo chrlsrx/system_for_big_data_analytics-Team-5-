@@ -12,10 +12,7 @@ public class NewOrder {
 		this.no_w_id = k;
 		
 	}
-	@Override
-	public int hashCode() {
-		return Objects.hash(no_o_id, no_d_id, no_w_id);
-	}
+	
 
 	@Override
 	public int hashCode() {

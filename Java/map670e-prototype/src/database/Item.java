@@ -12,8 +12,7 @@ public class Item implements DatabaseConstants{
 	private String i_name;
 	private double i_price;
 	private String i_data;
-<<<<<<< HEAD
-	
+
 	public Item(int id)
 	{
 		this.id  = id;
@@ -22,7 +21,7 @@ public class Item implements DatabaseConstants{
 	public int get_i_im_id()
 	{
 		return this.i_im_id;
-=======
+	}
 	private static HashMap<Integer, Integer> items = new HashMap<Integer,Integer>() ;
 	
 	public Item(int i,int j)
@@ -49,7 +48,7 @@ public class Item implements DatabaseConstants{
 			return false;
 		Item other = (Item) obj;
 		return id == other.id;
->>>>>>> 5ace64643f14e67fba551e6adba9b71ccc9c9b74
+
 	}
 	public String get_i_name()
 	{
@@ -59,7 +58,7 @@ public class Item implements DatabaseConstants{
 	{
 		return this.i_data;
 	}
-	public float get_price()
+	public double get_price()
 	{
         return this.i_price;
 	}
