@@ -28,7 +28,7 @@ public class Warehouse implements DatabaseConstants {
 		this.w_state = Integer.toString((int) Math.random() * 99) ;
 		this.w_zip = "9512" + Integer.toString((int) Math.random() * 9) ;
 		this.w_tax = w_tax_min + Math.random() * (w_tax_max - w_tax_min);
-		this.w_ytd = Math.random() * 365; ;
+		this.w_ytd = Math.random() * 365; 
 		
 		this.w_districts = new HashMap<Integer, District>() ;
 	}
