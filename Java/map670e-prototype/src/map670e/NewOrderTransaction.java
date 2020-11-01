@@ -90,7 +90,7 @@ public class NewOrderTransaction {
 			Item it = (Item) read4.apply() ;
 			cnt++ ;
 			
-			float i_price = it.get_price() ;
+			double i_price = it.get_price() ;
 			String i_name = it.get_i_name() ;
 			String i_data = it.get_i_data() ;
 			
@@ -152,17 +152,17 @@ public class NewOrderTransaction {
 	public void NewOrderTransactionRun() {
 
 		Warehouse w = (Warehouse) db.getObject(w_id, Types.WAREHOUSE);// we retrieve the warehouse
-		int tax = w.get_w_tax();// we get the tax
+		double tax = w.get_w_tax();// we get the tax
 		int d_id = data.get_d_id();// we get the district number
 		int d_code = (new District(w_id, d_id)).hashCode();
 		District d = (District) db.getObject(d_code, Types.DISTRICT);
-		float d_tax = d.get_d_tax();
+		double d_tax = d.get_d_tax();
 		int d_next_o_id = d.get_d_next_o_id() + 1;
 		int c_id = data.get_c_id();
 		int c_code = (new Customer(c_id, d_id, w_id)).hashCode();
 		Customer c = (Customer) db.getObject(c_code, Types.CUSTOMER);
 		String c_last = c.get_c_last();
-		float c_discount = c.get_c_discount();
+		double c_discount = c.get_c_discount();
 		String c_credit = c.get_c_credit();
 		NewOrder nwd = new NewOrder(d_next_o_id, d_id, w_id);
 		Order ord = new Order(d_next_o_id, c_id, d_id, w_id);
@@ -189,7 +189,7 @@ public class NewOrderTransaction {
 			}
 			int code_item = (new Item(item_id)).hashCode();
 			Item it = (Item) db.getObject(code_item, Types.ITEM);
-			float i_price = it.get_price();
+			double i_price = it.get_price();
 			String i_name = it.get_i_name();
 			String i_data = it.get_i_data();
 			int code_stock = (new Stock(item_id, supplier_id)).hashCode();

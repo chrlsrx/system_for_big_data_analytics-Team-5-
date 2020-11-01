@@ -78,6 +78,22 @@ public class DataGeneration {
 	{
 		return this.get_c_id();
 	}
+	public int get_number_items()
+	{
+		return this.number_items;
+	}
+	public ArrayList<Integer> get_ol_suppliers()
+	{
+		return this.ol_suppliers;
+	}
+	public ArrayList<Integer> get_ol_identifiers()
+	{
+		return this.ol_identifiers;
+	}
+	public ArrayList<Double> get_ol_quantities()
+	{
+		return this.ol_quantity;
+	}
 
 
 }
