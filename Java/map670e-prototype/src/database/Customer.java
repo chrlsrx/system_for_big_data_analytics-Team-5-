@@ -32,7 +32,7 @@ public class Customer implements DatabaseConstants{
 	
 	private HashMap<Integer, Order> c_orders ;
 	
-	public Customer(int c_id,int c_d_id, int c_w_id) {
+	public Customer(int c_id, int c_d_id, int c_w_id) {
 		
 		this.c_id = c_id ;
 		this.c_d_id = c_d_id ;
@@ -61,7 +61,7 @@ public class Customer implements DatabaseConstants{
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(c_d_id, c_id, c_w_id);
+		return Objects.hash(c_id, c_d_id, c_w_id);
 	}
 
 	@Override

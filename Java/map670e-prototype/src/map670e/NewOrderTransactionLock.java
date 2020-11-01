@@ -59,6 +59,10 @@ public class NewOrderTransactionLock implements Runnable {
 		}
 		
 		Warehouse w = (Warehouse) read1.apply();
+		if (w.equals(null)) {
+			System.out.println("ERROR : warehouse does not exist (transaction " + this.transaction_id + ")" );
+			return false ;
+		}
 		double tax = w.get_w_tax(); // we get the tax
 		cnt++;
 		
@@ -79,6 +83,10 @@ public class NewOrderTransactionLock implements Runnable {
 		}
 		
 		District d = (District) read2.apply();
+		if (d == null) {
+			System.out.println("ERROR : district does not exist (transaction " + this.transaction_id + ")" );
+			return false ;
+		}
 		double d_tax = d.get_d_tax();
 		int d_next_o_id = d.get_d_next_o_id() + 1;
 		cnt++;
@@ -88,7 +96,11 @@ public class NewOrderTransactionLock implements Runnable {
 		Customer fake_c = new Customer(c_id, d_id, w_id) ;
 		int c_code = fake_c.hashCode();
 		
-		ReadLock read3 = new ReadLock(this.transaction_id, this.db, this.lockmanager, d_code, fake_c, Types.DISTRICT, this.ts);
+		System.out.println("aaaa" + c_id);
+		System.out.println("bbbb" + fake_c);
+		System.out.println("cccc" + fake_c.hashCode());
+		
+		ReadLock read3 = new ReadLock(this.transaction_id, this.db, this.lockmanager, d_code, fake_c, Types.CUSTOMER, this.ts);
 		status = read3.applyLock() ;
 		if (status == Status.ABORT) {
 			return false ;
@@ -100,6 +112,10 @@ public class NewOrderTransactionLock implements Runnable {
 		}
 
 		Customer c = (Customer) read3.apply();
+		if (c == null) {
+			System.out.println("ERROR : customer does not exist (transaction " + this.transaction_id + ")" );
+			return false ;
+		}
 		String c_last = c.get_c_last();
 		double c_discount = c.get_c_discount();
 		String c_credit = c.get_c_credit();

@@ -42,32 +42,6 @@ public class Warehouse implements DatabaseConstants {
 		return this.w_districts ;
 	}
 
-	//w_id is the primary key
-	@Override
-	public int hashCode() {
-		return Objects.hash(w_id);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!(obj instanceof Warehouse)) {
-			return false;
-		}
-		Warehouse other = (Warehouse) obj;
-		return w_id == other.w_id;
-	}
-	
-	/* TO delete if not needed, only used as an example */
-	@Override
-	public String toString() {
-		return "Warehouse [w_id=" + w_id + ", w_name=" + w_name + ", w_street1=" + w_street1 + ", w_street2="
-				+ w_street2 + ", w_city=" + w_city + ", w_state=" + w_state + ", w_zip=" + w_zip + ", w_tax=" + w_tax
-				+ ", w_ytd=" + w_ytd + ", w_districts=" + w_districts + "]";
-	}
-	
 	public void setStreet1(String stg) {
 		this.w_street1 = stg ;
 	}
@@ -80,5 +54,31 @@ public class Warehouse implements DatabaseConstants {
 	{
 		return this.w_id;
 	}
+	
+	//w_id is the primary key
+		@Override
+		public int hashCode() {
+			return Objects.hash(w_id);
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (!(obj instanceof Warehouse)) {
+				return false;
+			}
+			Warehouse other = (Warehouse) obj;
+			return w_id == other.w_id;
+		}
+		
+		/* TO delete if not needed, only used as an example */
+		@Override
+		public String toString() {
+			return "Warehouse [w_id=" + w_id + ", w_name=" + w_name + ", w_street1=" + w_street1 + ", w_street2="
+					+ w_street2 + ", w_city=" + w_city + ", w_state=" + w_state + ", w_zip=" + w_zip + ", w_tax=" + w_tax
+					+ ", w_ytd=" + w_ytd + ", w_districts=" + w_districts + "]";
+		}
 	
 }

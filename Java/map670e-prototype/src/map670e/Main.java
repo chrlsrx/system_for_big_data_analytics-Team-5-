@@ -29,7 +29,7 @@ public class Main {
 		
 		//
 		DataGeneration data = new DataGeneration(wh_hash) ;
-		
+
 		int num_trans = 5 ;
 		ArrayList<NewOrderTransactionLock> transactions  = new ArrayList<NewOrderTransactionLock>();
 		for (int cnt = 0; cnt < num_trans; cnt++) {
@@ -40,7 +40,7 @@ public class Main {
 		System.out.println("Initialized: Transactions");
 		System.out.println("=========================");
 		schedule.run() ;
-		
+
 		
 		// The code bellow is used to test the read/write transactions
 		/* On vérifie si ça marche pas trop mal */
