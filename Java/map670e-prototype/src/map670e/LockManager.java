@@ -1,6 +1,6 @@
 package map670e;
 
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -8,12 +8,12 @@ public class LockManager {
 
 	// 2 Maps for all classes -> Cons : check type with equals, have to store the
 	// "fake" entity in lock
-	private HashMap<Integer, ArrayList<Lock>> read_locks;
-	private HashMap<Integer, ArrayList<Lock>> write_locks;
+	private Hashtable<Integer, ArrayList<Lock>> read_locks;
+	private Hashtable<Integer, ArrayList<Lock>> write_locks;
 
 	public LockManager() {
-		this.read_locks = new HashMap<Integer, ArrayList<Lock>>();
-		this.write_locks = new HashMap<Integer, ArrayList<Lock>>();
+		this.read_locks = new Hashtable<Integer, ArrayList<Lock>>();
+		this.write_locks = new Hashtable<Integer, ArrayList<Lock>>();
 	}
 
 	public boolean add_lock(Object o, boolean l_read, int transaction_id, LocalTime time) {

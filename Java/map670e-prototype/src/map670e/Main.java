@@ -26,9 +26,6 @@ public class Main {
 		int wh_hash = wh.hashCode() ;
 		System.out.println("Id of the unique warehouse: " + wh_hash);
 		
-		
-		//
-		
 
 		int num_trans = 100;
 		ArrayList<NewOrderTransactionLock> transactions  = new ArrayList<NewOrderTransactionLock>();
