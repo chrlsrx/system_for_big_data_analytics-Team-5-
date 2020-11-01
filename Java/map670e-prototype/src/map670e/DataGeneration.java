@@ -81,7 +81,7 @@ public class DataGeneration {
 	}
 	public int get_c_id()
 	{
-		return this.get_c_id();
+		return this.c_id;
 	}
 	public int get_number_items()
 	{
