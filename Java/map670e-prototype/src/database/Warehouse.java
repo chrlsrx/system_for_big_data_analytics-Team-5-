@@ -71,4 +71,12 @@ public class Warehouse implements DatabaseConstants {
 	public void setStreet1(String stg) {
 		this.w_street1 = stg ;
 	}
+	public double get_w_tax() 
+	{
+		return this.w_tax;
+	}
+	public int get_c_id()
+	{
+		return this.get_c_id();
+	}
 }

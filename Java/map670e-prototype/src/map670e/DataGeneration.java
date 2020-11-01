@@ -70,5 +70,14 @@ public class DataGeneration {
 		
 		
 	}
+	public int get_d_id()
+	{
+		return this.d_id;
+	}
+	public int get_c_id()
+	{
+		return this.get_c_id();
+	}
+
 
 }

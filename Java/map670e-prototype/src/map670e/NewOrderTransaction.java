@@ -31,7 +31,7 @@ public class NewOrderTransaction {
 		// We retrieve the warehouse, and then read the value we need.
 		Read read1 = new Read(cnt, this.db, this.w_id, Types.WAREHOUSE) ;
 		Warehouse w = (Warehouse) read1.apply() ;
-		int tax = w.get_w_tax() ; // we get the tax
+		double tax = w.get_w_tax() ; // we get the tax
 		cnt++ ;
 		
 		// We retrieve the district, and read the useful values.
