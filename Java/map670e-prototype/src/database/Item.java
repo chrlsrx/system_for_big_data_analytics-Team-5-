@@ -17,6 +17,9 @@ public class Item implements DatabaseConstants{
 	public Item(int id)
 	{
 		this.id  = id;
+                 this.i_name = names_of_items[(int) Math.random()*3];
+		this.i_price = Math.random()*1000;
+		this.i_data = brands[(int) Math.random()*3];
 		
     }
 	public int get_i_im_id()
