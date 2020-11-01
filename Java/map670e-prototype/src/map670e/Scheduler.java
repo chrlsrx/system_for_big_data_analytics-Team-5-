@@ -6,11 +6,11 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 
 public class Scheduler {
-	private int num_workers ;
+	private final int num_workers ;
 	private ArrayList<NewOrderTransactionLock> transactions ;
 	private ArrayList<NewOrderTransactionLock> transactions_aborted ;
 
-	public Scheduler(int num_workers) {
+	public Scheduler(final int num_workers) {
 		this.num_workers = num_workers ;
 		this.transactions = new ArrayList<NewOrderTransactionLock>() ;
 		this.transactions_aborted = new ArrayList<NewOrderTransactionLock>() ;

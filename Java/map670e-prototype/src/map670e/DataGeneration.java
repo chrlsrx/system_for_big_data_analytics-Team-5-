@@ -17,10 +17,15 @@ public class DataGeneration {
 	public DataGeneration(int w_id)
 	{
 		this.w_id = w_id;
-		this.d_id = (int)(Math.random() * (10)) + 1;
+		this.d_id = (int)(Math.random() * (10)) ; // + 1 removed because start at 0
 		this.c_id = (((int)(Math.random() * (1023)))|((int)(Math.random() * (3000)) + 1)+(int)(Math.random() * (1023)))%(3000)+1;
 		this.number_items = (int)(Math.random() * (10)) + 5;
 		this.rbk = (int)(Math.random() * (100)) + 1;
+		
+		this.items = new  ArrayList<Integer>();
+		this.ol_suppliers = new  ArrayList<Integer>();
+		this.ol_identifiers = new  ArrayList<Integer>();
+		this.ol_quantity = new ArrayList<Double>();
 		
 		for(int i =0; i <number_items;i++)
 		{

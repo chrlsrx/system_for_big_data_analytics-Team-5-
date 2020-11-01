@@ -21,6 +21,12 @@ public class Database implements DatabaseConstants {
 		this.warehouses = new HashMap<Integer, Warehouse>();
 		this.districts = new HashMap<Integer, District>();
 		this.customers = new HashMap<Integer,Customer>();
+		this.histories = new HashMap<Integer,History>();
+		this.items = new HashMap<Integer,Item>();
+		this.neworders = new HashMap<Integer,NewOrder>();
+		this.orderlines = new HashMap<Integer, Order_Line>();
+		this.orders = new HashMap<Integer, Order>() ;
+		this.stocks = new HashMap<Integer, Stock>() ;
 
 		for (int i = 0; i < num_warehouses; i++) {
 			// Create a new warehouse

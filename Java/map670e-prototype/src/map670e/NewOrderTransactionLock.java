@@ -4,6 +4,7 @@ import database.*;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class NewOrderTransactionLock implements Runnable {
@@ -15,13 +16,13 @@ public class NewOrderTransactionLock implements Runnable {
 	private DataGeneration data;
 	private LocalTime ts;
 
-	public NewOrderTransactionLock(int transaction_id, int w_id, Database d, LockManager lockmanager, LocalTime time) {
+	public NewOrderTransactionLock(int transaction_id, int w_id, Database d, LockManager lockmanager) {
 		this.transaction_id = transaction_id;
 		this.w_id = w_id;
 		this.data = new DataGeneration(w_id);
 		this.db = d;
 		this.lockmanager = lockmanager;
-		this.ts = time ;
+		this.ts = LocalTime.now() ;
 	}
 
 	
@@ -46,7 +47,7 @@ public class NewOrderTransactionLock implements Runnable {
 		// We retrieve the warehouse, and then read the value we need.
 		Warehouse fake_wh = new Warehouse(this.w_id) ;
 		
-		ReadLock read1 = new ReadLock(this.transaction_id, this.db, this.lockmanager, this.w_id, fake_wh, Types.WAREHOUSE, this.ts);
+		ReadLock read1 = new ReadLock(this.transaction_id, this.db, this.lockmanager, fake_wh.hashCode(), fake_wh, Types.WAREHOUSE, this.ts);
 		Status status = read1.applyLock() ;
 		if (status == Status.ABORT) {
 			return false ;
@@ -58,12 +59,12 @@ public class NewOrderTransactionLock implements Runnable {
 		}
 		
 		Warehouse w = (Warehouse) read1.apply();
-		int tax = w.get_w_tax(); // we get the tax
+		double tax = w.get_w_tax(); // we get the tax
 		cnt++;
 		
 		// We retrieve the district, and read the useful values.
 		int d_id = data.get_d_id(); // we get the district number
-		District fake_d = new District(w_id, d_id) ;
+		District fake_d = new District(d_id, w_id) ;
 		int d_code = fake_d.hashCode() ;
 		
 		ReadLock read2 = new ReadLock(this.transaction_id, this.db, this.lockmanager, d_code, fake_d, Types.DISTRICT, this.ts);
@@ -146,7 +147,7 @@ public class NewOrderTransactionLock implements Runnable {
 		ArrayList<Integer> ol_suppliers = data.get_ol_suppliers();
 		ArrayList<Double> quantity = data.get_ol_quantities();
 		int number_items = data.get_number_items();
-		double total_amount;
+		double total_amount = 0;
 
 		for (int i = 0; i < number_items; i++) {
 			int item_id = ol_identifiers.get(i);
@@ -257,10 +258,44 @@ public class NewOrderTransactionLock implements Runnable {
 			cnt++;
 
 			total_amount += ol_amount * (1 - c_discount) * (1 + tax + d_tax);
-
+			
+			// We release the locks of this loop
+			this.lockmanager.remove_locks(ol, false, this.transaction_id) ; // Lock on the OrderLine
+			this.lockmanager.remove_locks(fake_i, false, this.transaction_id) ; // Lock on the Item
+			this.lockmanager.remove_locks(fake_s, false, this.transaction_id) ; // Lock on the Stock
+			this.lockmanager.remove_locks(fake_s, true, this.transaction_id) ; // Lock on the Stock
+			this.lockmanager.remove_locks(fake_i, true, this.transaction_id) ; // Lock on the Item
 		}
+		System.out.println("The transaction " + transaction_id + " is now releasing its last locks.");
+		this.lockmanager.remove_locks(nwd, false, this.transaction_id) ; // Lock on the NewOrder
+		this.lockmanager.remove_locks(ord, false, this.transaction_id) ; // Lock on the Order
+		this.lockmanager.remove_locks(d, true, this.transaction_id) ; // Lock on the District
+		this.lockmanager.remove_locks(w, true, this.transaction_id) ; // Lock on the Warehouse
+		
+		
 		System.out.println("The transaction " + transaction_id + " has been completed " + "(" + cnt + " operations, "
 				+ total_amount + "€).");
+		
+		return true ;
 
+	}
+
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(transaction_id);
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof NewOrderTransactionLock)) {
+			return false;
+		}
+		NewOrderTransactionLock other = (NewOrderTransactionLock) obj;
+		return transaction_id == other.transaction_id;
 	}
 }
