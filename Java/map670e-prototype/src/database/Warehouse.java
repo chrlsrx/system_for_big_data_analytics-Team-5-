@@ -75,8 +75,5 @@ public class Warehouse implements DatabaseConstants {
 	{
 		return this.w_tax;
 	}
-	public int get_c_id()
-	{
-		return this.get_c_id();
-	}
+	
 }
