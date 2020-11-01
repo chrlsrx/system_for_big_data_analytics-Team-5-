@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="resources"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-13">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/User/Desktop/M2 - Data Science X/Period 1/MAP670E - System for Big Data Analytics/Project Git/system_for_big_data_analytics-Team-5-/janino-2.5.7.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
