@@ -28,11 +28,12 @@ public class Main {
 		
 		
 		//
-		DataGeneration data = new DataGeneration(wh_hash) ;
+		
 
-		int num_trans = 5 ;
+		int num_trans = 100;
 		ArrayList<NewOrderTransactionLock> transactions  = new ArrayList<NewOrderTransactionLock>();
 		for (int cnt = 0; cnt < num_trans; cnt++) {
+			DataGeneration data = new DataGeneration(wh_hash) ;
 			NewOrderTransactionLock transaction = new NewOrderTransactionLock(cnt, wh.getId(), db, lockm);
 			transactions.add(transaction) ;
 		}

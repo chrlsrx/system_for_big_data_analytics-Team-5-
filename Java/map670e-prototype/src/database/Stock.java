@@ -21,13 +21,13 @@ public class Stock implements DatabaseConstants{
 	private double s_order_cnt;
 	private double s_remote_cnt;
 	private String s_data;
-	private static HashMap<Integer,Integer> stocks;
+	//private static HashMap<Integer,Integer> stocks;
 	
 	public Stock(int i, int j)
 	{
 		this.s_i_id = i;
 		this.s_w_id = j;
-		this.stocks.put(i,j);
+		//this.stocks.put(i,j);
 		
 		this.s_quantity = Math.random()*1000;
 		this.s_dist01 = districts[(int) Math.random()*10];

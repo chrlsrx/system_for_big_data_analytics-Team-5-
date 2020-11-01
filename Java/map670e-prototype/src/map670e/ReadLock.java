@@ -33,7 +33,7 @@ public class ReadLock extends Read {
 			
 			
 		// Ask a read_lock since status == ACCEPTED
-		this.lockmanager.add_lock(this.target, true, this.hashCode(), this.time) ;
+		this.lockmanager.add_lock(this.target, true, this.id, this.time) ;
 			
 		/* OLD VERSION, KEEP IN CASE */
 		/*

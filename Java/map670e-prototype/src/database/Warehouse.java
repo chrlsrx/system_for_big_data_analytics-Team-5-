@@ -15,6 +15,7 @@ public class Warehouse implements DatabaseConstants {
 	private double w_tax ;				// useless ?
 	private double w_ytd ;				// useless ?
 	private HashMap<Integer, District> w_districts ;
+	private HashMap<Integer, Stock> w_stocks ;
 	
 	public Warehouse(int w_id) {
 		
@@ -31,6 +32,7 @@ public class Warehouse implements DatabaseConstants {
 		this.w_ytd = Math.random() * 365; 
 		
 		this.w_districts = new HashMap<Integer, District>() ;
+		this.w_stocks = new HashMap<Integer, Stock>() ;
 	}
 	
 	public HashMap<Integer, District> populate_district(int num) {
@@ -41,6 +43,25 @@ public class Warehouse implements DatabaseConstants {
 		}
 		return this.w_districts ;
 	}
+	
+	public HashMap<Integer, Stock> populate_stock(int num) {
+		// If we want to avoid the creation in cascade of the instances (otherwise, put in constructor)
+		for (int i = 0; i < num; i++) {
+			Stock stock = new Stock(i, this.w_id) ;
+			this.w_stocks.put(stock.hashCode(), stock) ; 
+		}
+		return this.w_stocks ;
+	}
+	
+	public HashMap<Integer, Item> populate_item(int num) {
+		HashMap<Integer, Item> items = new HashMap<Integer, Item>() ;
+		for (int i = 0; i < num; i++) {
+			Item item = new Item(i) ;
+			items.put(item.hashCode(), item) ; 
+		}
+		return items ;
+	}
+	
 
 	public void setStreet1(String stg) {
 		this.w_street1 = stg ;

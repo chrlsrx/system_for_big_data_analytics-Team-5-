@@ -2,6 +2,7 @@ package database;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Objects;
 
 public class Customer implements DatabaseConstants{
@@ -30,14 +31,14 @@ public class Customer implements DatabaseConstants{
 	private int c_delivry_cnt ;
 	private String c_data ;			// useless ? t500
 	
-	private HashMap<Integer, Order> c_orders ;
+	private Hashtable<Integer, Order> c_orders ;
 	
 	public Customer(int c_id, int c_d_id, int c_w_id) {
 		
 		this.c_id = c_id ;
 		this.c_d_id = c_d_id ;
 		this.c_w_id = c_w_id ;
-		this.c_orders = new HashMap<Integer, Order>() ;
+		this.c_orders = new Hashtable<Integer, Order>() ;
 		
 		this.c_first = information[(int) Math.random()*3];
 		this.c_middle = information[(int) Math.random()*3];

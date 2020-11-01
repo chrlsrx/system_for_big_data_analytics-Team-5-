@@ -35,6 +35,10 @@ public class Database implements DatabaseConstants {
 			warehouses.put(wh.hashCode(), wh) ;
 			// Populate the warehouses and add the districts to the HashMap
 			districts.putAll(wh.populate_district(num_districts)) ;
+			// Populate the stocks
+			stocks.putAll(wh.populate_stock(num_stocks)) ;
+			// Populate the items (here equality because the items are common to the warehouses
+			items = wh.populate_item(num_items) ;
 		}
 		
 		// Iterate through the districts hashmap, and populate them
@@ -44,8 +48,8 @@ public class Database implements DatabaseConstants {
 	            // Populate and add
 	            customers.putAll(pair.getValue().populate_clients(num_customers));
 	        }
+	
 	    
-	    // ATTENTION : DO THE SAME FOR THE OTHER CLASSES
 	}
 	
 	public Object getObject(int target_hash, Types target_type) {

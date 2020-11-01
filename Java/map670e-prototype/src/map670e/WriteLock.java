@@ -47,7 +47,7 @@ public class WriteLock extends Write {
 		}
 		
 		// Check if S locked & deadlock prevention
-		status = this.lockmanager.isSLocked(this.target, this.time) ;
+		status = this.lockmanager.isSLocked(this.target, this.id, this.time) ;
 		if (status == Status.WAIT) {
 			return Status.WAIT ;	// Wait and retry
 		} else if (status == Status.ABORT) {
@@ -55,8 +55,7 @@ public class WriteLock extends Write {
 		}
 		
 		// Ask a read_lock since status == ACCEPTED
-		this.lockmanager.add_lock(this.target, false, this.hashCode(), this.time) ;
-		
+		this.lockmanager.add_lock(this.target, false, this.id, this.time) ;
 		/* OLD VERSION, KEEP IN CASE */
 		/*
 		// We have the lock, can write.

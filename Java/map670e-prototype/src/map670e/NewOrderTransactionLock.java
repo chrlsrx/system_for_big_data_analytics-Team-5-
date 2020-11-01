@@ -43,6 +43,7 @@ public class NewOrderTransactionLock implements Runnable {
 	public boolean runTransaction() throws InterruptedException {
 
 		int cnt = 0;
+		double total_amount = 0;
 
 		// We retrieve the warehouse, and then read the value we need.
 		Warehouse fake_wh = new Warehouse(this.w_id) ;
@@ -112,7 +113,6 @@ public class NewOrderTransactionLock implements Runnable {
 			System.out.println("ERROR : customer does not exist (transaction " + this.transaction_id + ")" );
 			return false ;
 		}
-		
 		String c_last = c.get_c_last();
 		double c_discount = c.get_c_discount();
 		String c_credit = c.get_c_credit();
@@ -162,7 +162,7 @@ public class NewOrderTransactionLock implements Runnable {
 		ArrayList<Integer> ol_suppliers = data.get_ol_suppliers();
 		ArrayList<Double> quantity = data.get_ol_quantities();
 		int number_items = data.get_number_items();
-		double total_amount = 0;
+		
 
 		
 		
@@ -209,6 +209,10 @@ public class NewOrderTransactionLock implements Runnable {
 				status = read5.applyLock() ;
 			}
 			Stock s = (Stock) read5.apply();
+			if (s == null) {
+				System.out.println("ERROR : stock does not exist (transaction " + this.transaction_id + ")" );
+				return false ;
+			}
 			
 			String s_data = s.get_s_data();
 			double s_quantity = s.get_s_quantity();
@@ -223,6 +227,7 @@ public class NewOrderTransactionLock implements Runnable {
 			if (status == Status.ABORT) {
 				return false ;
 			} else if (status == Status.WAIT) {
+				System.out.println("WESHSS: " + item_id + "," + supplier_id);
 				System.out.println("Transaction " + this.transaction_id + " waits a bit");
 				TimeUnit.MILLISECONDS.sleep(300);
 				this.ts = LocalTime.now() ; // update TimeStamp of Operation -> to check later
