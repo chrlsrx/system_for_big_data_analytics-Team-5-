@@ -48,8 +48,12 @@ public class Database implements DatabaseConstants {
 	            // Populate and add
 	            customers.putAll(pair.getValue().populate_clients(num_customers));
 	        }
-	
-	    
+	    for (int k = 1; k <= num_items; k++) {
+	    	Item item = new Item(k);
+	    	items.put(item.hashCode(),item);
+	    }   
+	    // ATTENTION : DO THE SAME FOR THE OTHER CLASSES
+
 	}
 	
 	public Object getObject(int target_hash, Types target_type) {

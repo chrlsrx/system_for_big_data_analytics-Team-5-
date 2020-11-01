@@ -10,8 +10,10 @@ public interface DatabaseConstants {
 	int num_warehouses = 1 ;
 	int num_districts = 10 ;
 	int num_customers = 30000 ;
+
 	int num_stocks = 100000 ;
 	int num_items = 100000 ;
+
 	
 	int w_tax_min = 0 ;
 	int w_tax_max = 5 ;
