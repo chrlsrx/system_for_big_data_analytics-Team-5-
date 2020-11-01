@@ -24,7 +24,7 @@ public class ReadLock extends Read {
 			
 
 		// Check if X locked & deadlock prevention
-		Status status = this.lockmanager.isXLocked(this.target, this.time) ;
+		Status status = this.lockmanager.isXLocked(this.target, this.id, this.time) ;
 		if (status == Status.WAIT) {
 			return Status.WAIT ;	// Wait and retry
 		} else if (status == Status.ABORT) {
@@ -33,7 +33,7 @@ public class ReadLock extends Read {
 			
 			
 		// Ask a read_lock since status == ACCEPTED
-		boolean accepted = this.lockmanager.add_lock(this.target, true, this.hashCode(), this.time) ;
+		this.lockmanager.add_lock(this.target, true, this.hashCode(), this.time) ;
 			
 		/* OLD VERSION, KEEP IN CASE */
 		/*

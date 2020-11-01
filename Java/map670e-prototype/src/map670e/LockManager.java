@@ -3,7 +3,6 @@ package map670e;
 import java.util.HashMap;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import database.*;
 
 public class LockManager {
 
@@ -85,7 +84,7 @@ public class LockManager {
 		return true;
 	}
 
-	public Status isXLocked(Object o, LocalTime time) {
+	public Status isXLocked(Object o, int transaction_id, LocalTime time) {
 		int hash = o.hashCode();
 		boolean already_locked = false;
 		ArrayList<Lock> keys = this.write_locks.get(hash);
@@ -104,12 +103,17 @@ public class LockManager {
 		if (!already_locked) {
 			return Status.ACCEPTED;
 		}
-
+		
 		// If there is one, apply Wait-Die policy
 		if (keys.get(i).hasHigherPrio(time)) {
 			return Status.ABORT;
 		}
-
+		
+		// There is the case where we update a value : we added a SLock first, and now we're trying to add a Xlock
+		if (keys.get(i).getTransaction() == transaction_id) {
+			return Status.ACCEPTED ;
+		}
+		
 		// This transaction has a higher priority : wait.
 		return Status.WAIT;
 	}
