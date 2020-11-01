@@ -34,7 +34,6 @@ public class Scheduler {
 	    	transactions.remove(0) ;
 	    	executor.execute(transaction);
 	    }
-	    
 	    executor.shutdown();
 	    while (!executor.isTerminated()) { }
 	    

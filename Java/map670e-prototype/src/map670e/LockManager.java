@@ -59,13 +59,14 @@ public class LockManager {
 		boolean removed = false;
 		ArrayList<Lock> writes = this.write_locks.get(o_hash);
 		int i = 0;
-		while (!removed && (i <= writes.size())) {
+		while (!removed && (i < writes.size())) {
 			Object tmp = writes.get(i).getEntity();
 			// We can only have one X lock, no need to check transaction_id
 			if (o.equals(tmp)) {
 				writes.remove(tmp);
 				removed = true;
 			}
+			i++;
 		}
 
 		ArrayList<Lock> reads = this.read_locks.get(o_hash);
@@ -74,29 +75,31 @@ public class LockManager {
 		// condition
 		while (i <= reads.size()) {
 			Lock tmp = reads.get(i);
-			;
 			// We can have several transactions with a read lock, so need to be careful
 			if ((transaction_hash == tmp.getTransaction()) && o.equals(tmp.getEntity())) {
 				writes.remove(tmp);
 			}
+			i++;
 		}
 
 		return true;
 	}
 
 	public Status isXLocked(Object o, int transaction_id, LocalTime time) {
+		
 		int hash = o.hashCode();
 		boolean already_locked = false;
 		ArrayList<Lock> keys = this.write_locks.get(hash);
 		// If the list of locks is null : there is no lock
-		if (keys == null) {
+		if (keys == null || keys.size() == 0) {
 			return Status.ACCEPTED;
 		}
 
 		// But if not null, we have to check if there is a lock on o (same class as o)
 		int i = 0;
-		while (!already_locked && (i <= keys.size())) {
+		while (!already_locked && (i < keys.size())) {
 			already_locked = o.equals(keys.get(i).getEntity());
+			i++ ;
 		}
 
 		// If there is no X lock on this entity
@@ -105,12 +108,12 @@ public class LockManager {
 		}
 		
 		// If there is one, apply Wait-Die policy
-		if (keys.get(i).hasHigherPrio(time)) {
+		if (keys.get(i-1).hasHigherPrio(time)) {
 			return Status.ABORT;
 		}
 		
 		// There is the case where we update a value : we added a SLock first, and now we're trying to add a Xlock
-		if (keys.get(i).getTransaction() == transaction_id) {
+		if (keys.get(i-1).getTransaction() == transaction_id) {
 			return Status.ACCEPTED ;
 		}
 		
@@ -131,6 +134,7 @@ public class LockManager {
 		int i = 0;
 		while (!already_locked && (i <= keys.size())) {
 			already_locked = o.equals(keys.get(i).getEntity());
+			i++;
 		}
 		// If there is no S lock on this entity
 		if (!already_locked) {

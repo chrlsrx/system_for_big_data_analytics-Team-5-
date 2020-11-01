@@ -59,7 +59,7 @@ public class NewOrderTransactionLock implements Runnable {
 		}
 		
 		Warehouse w = (Warehouse) read1.apply();
-		if (w.equals(null)) {
+		if (w == null) {
 			System.out.println("ERROR : warehouse does not exist (transaction " + this.transaction_id + ")" );
 			return false ;
 		}
@@ -91,16 +91,12 @@ public class NewOrderTransactionLock implements Runnable {
 		int d_next_o_id = d.get_d_next_o_id() + 1;
 		cnt++;
 
-		// We retrive the client, and read the useful values.
+		// We retrieve the client, and read the useful values.
 		int c_id = data.get_c_id();
 		Customer fake_c = new Customer(c_id, d_id, w_id) ;
 		int c_code = fake_c.hashCode();
 		
-		System.out.println("aaaa" + c_id);
-		System.out.println("bbbb" + fake_c);
-		System.out.println("cccc" + fake_c.hashCode());
-		
-		ReadLock read3 = new ReadLock(this.transaction_id, this.db, this.lockmanager, d_code, fake_c, Types.CUSTOMER, this.ts);
+		ReadLock read3 = new ReadLock(this.transaction_id, this.db, this.lockmanager, c_code, fake_c, Types.CUSTOMER, this.ts);
 		status = read3.applyLock() ;
 		if (status == Status.ABORT) {
 			return false ;
@@ -116,6 +112,7 @@ public class NewOrderTransactionLock implements Runnable {
 			System.out.println("ERROR : customer does not exist (transaction " + this.transaction_id + ")" );
 			return false ;
 		}
+		
 		String c_last = c.get_c_last();
 		double c_discount = c.get_c_discount();
 		String c_credit = c.get_c_credit();
@@ -131,6 +128,7 @@ public class NewOrderTransactionLock implements Runnable {
 				break;
 			}
 		}
+
 		
 		WriteLock write1 = new WriteLock(this.transaction_id, this.db, this.lockmanager, ord, Types.ORDER, this.ts);
 		status = write1.applyLock() ;
@@ -145,19 +143,20 @@ public class NewOrderTransactionLock implements Runnable {
 		write1.apply();
 		cnt++;
 		
+		
 		WriteLock write2 = new WriteLock(this.transaction_id, this.db, this.lockmanager, nwd, Types.NEWORDER, this.ts);
-		write2.apply();
 		status = write2.applyLock() ;
 		if (status == Status.ABORT) {
 			return false ;
 		} else if (status == Status.WAIT) {
 			System.out.println("Transaction " + this.transaction_id + " waits a bit");
 			TimeUnit.MILLISECONDS.sleep(300);
-			this.ts = LocalTime.now() ; // update TimeStamp of Operation -> to check later
+			//this.ts = LocalTime.now() ; // update TimeStamp of Operation -> to check later
 			status = write2.applyLock() ;
 		}
+		write2.apply();
 		cnt++;
-
+		
 		// ???
 		ArrayList<Integer> ol_identifiers = data.get_ol_identifiers();
 		ArrayList<Integer> ol_suppliers = data.get_ol_suppliers();
@@ -165,6 +164,8 @@ public class NewOrderTransactionLock implements Runnable {
 		int number_items = data.get_number_items();
 		double total_amount = 0;
 
+		
+		
 		for (int i = 0; i < number_items; i++) {
 			int item_id = ol_identifiers.get(i);
 			int supplier_id = ol_suppliers.get(i);
@@ -186,7 +187,10 @@ public class NewOrderTransactionLock implements Runnable {
 				status = read4.applyLock() ;
 			}
 			Item it = (Item) read4.apply();
-
+			if (it == null) {
+				System.out.println("ERROR : item n°" + i + " does not exist (transaction " + this.transaction_id + ")" );
+				return false ;
+			}
 			double i_price = it.get_price();
 			String i_name = it.get_i_name();
 			String i_data = it.get_i_data();
@@ -291,7 +295,7 @@ public class NewOrderTransactionLock implements Runnable {
 		
 		System.out.println("The transaction " + transaction_id + " has been completed " + "(" + cnt + " operations, "
 				+ total_amount + "€).");
-		
+
 		return true ;
 
 	}

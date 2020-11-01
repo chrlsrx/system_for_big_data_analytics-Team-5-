@@ -38,7 +38,6 @@ public class WriteLock extends Write {
 	// This isn't clean, because there is also an apply function too
 	public Status applyLock() {
 		
-
 		// Check if X locked & deadlock prevention
 		Status status = this.lockmanager.isXLocked(this.target, this.id, this.time) ;
 		if (status == Status.WAIT) {
@@ -69,6 +68,6 @@ public class WriteLock extends Write {
 			status = Status.ABORT ;
 		}
 		*/
-		return status ;
+		return Status.ACCEPTED ;
 	}
 }

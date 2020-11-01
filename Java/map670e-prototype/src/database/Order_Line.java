@@ -12,16 +12,7 @@ public class Order_Line implements DatabaseConstants{
 	private int ol_i_id;
 	private int ol_supply_w_id;
 	private Date ol_delivery_d;
-	private double ol_quantity;
-
-	private double ol_amount = 0;
-	private String ol_dist_info = "";
-	public Order_Line(int i, int j, int k, int l)
-	{this.ol_o_id = i;
-	this.ol_d_id = j;
-	this.ol_w_id = k;
-	this.ol_number = l;
-	this.ol_delivery_d = null;  
+	private double ol_quantity; 
 
 	private double ol_amount;
 	private String ol_dist_info;

@@ -67,7 +67,4 @@ public class Item implements DatabaseConstants{
 	{
 		this.i_data = ch;
 	}
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}}
+}

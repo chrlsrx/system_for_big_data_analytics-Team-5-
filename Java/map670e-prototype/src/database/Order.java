@@ -17,9 +17,6 @@ public class Order {
 	private int o_ol_cnt ;
 	private int o_all_local ;
 
-	private double o_ol_cnt ;
-	private double o_all_local ;
-
 	private Integer[] o_carriers ;
 
 	public Order(int o_id, int o_c_id, int o_d_id, int o_w_id) {
@@ -29,13 +26,13 @@ public class Order {
 		this.o_w_id = o_w_id ;
 
 		this.o_carriers = null ;
-		this.o_ol_cnt = 0;
-		this.o_all_local = 1;
+		//this.o_ol_cnt = 0;
+		//this.o_all_local = 1;
 
 		
 		this.o_entry = new Date();
-		this.o_ol_cnt = Math.random()*100;
-		this.o_all_local = Math.random()*10;
+		this.o_ol_cnt = (int) (Math.random()*100);
+		this.o_all_local = (int) (Math.random()*10);
 	}
 
 	@Override
@@ -51,6 +48,7 @@ public class Order {
 			return false;
 		Order other = (Order) obj;
 		return o_d_id == other.o_d_id && o_id == other.o_id && o_w_id == other.o_w_id;
+	}
 
 	public void set_o_ol_cnt(int num)
 	{
