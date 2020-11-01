@@ -282,7 +282,7 @@ public class NewOrderTransactionLock implements Runnable {
 			write5.apply();
 			cnt++;
 
-			total_amount += ol_amount * (1 - c_discount) * (1 + tax + d_tax);
+			total_amount += ol_amount * (c_discount -1) * (1 + tax + d_tax);
 			
 			// We release the locks of this loop
 			this.lockmanager.remove_locks(ol, false, this.transaction_id) ; // Lock on the OrderLine

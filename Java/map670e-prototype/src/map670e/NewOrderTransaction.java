@@ -75,7 +75,7 @@ public class NewOrderTransaction {
 		ArrayList<Integer> ol_suppliers = data.get_ol_suppliers() ;
 		ArrayList<Double> quantity = data.get_ol_quantities() ;
 		int number_items = data.get_number_items() ;
-		double total_amount;
+		double total_amount = 0;
 		
 		for (int i = 0; i < number_items; i++) {
 			int item_id = ol_identifiers.get(i) ;
@@ -140,7 +140,7 @@ public class NewOrderTransaction {
 			write3.apply() ;
 			cnt++ ;
 			
-			total_amount += ol_amount * (1 - c_discount) * (1 + tax + d_tax) ;
+			total_amount += ol_amount * (c_discount - 1) * (1 + tax + d_tax) ;
 
 		}
 		System.out.println("The transaction " + transaction_id + " has been completed "
@@ -179,7 +179,7 @@ public class NewOrderTransaction {
 		int number_items = data.get_number_items();
 		db.setObject(ord, Types.ORDER);
 		db.setObject(nwd, Types.NEWORDER);
-		double total_amount;
+		double total_amount = 0;
 		for (int i = 0; i < number_items; i++) {
 			int item_id = ol_identifiers.get(i);
 			int supplier_id = ol_suppliers.get(i);
@@ -217,7 +217,7 @@ public class NewOrderTransaction {
 			ol.set_ol_amount(ol_amount);
 			ol.set_ol_dist_info(s_dis_id);
 			db.setObject(ol, Types.ORDER_LINE);
-			total_amount += ol_amount * (1 - c_discount) * (1 + tax + d_tax);
+			total_amount += ol_amount * (c_discount -1) * (1 + tax + d_tax);
 
 		}
 		System.out.println(total_amount);
