@@ -44,7 +44,11 @@ public class Database implements DatabaseConstants {
 	            // Populate and add
 	            customers.putAll(pair.getValue().populate_clients(num_customers));
 	        }
-	    
+	    for (int k = 1; k <= num_items; k++)
+	    {
+	    	Item it = new Item(k);
+	    	items.put(it.hashCode),it);
+	    }   
 	    // ATTENTION : DO THE SAME FOR THE OTHER CLASSES
 	}
 	
