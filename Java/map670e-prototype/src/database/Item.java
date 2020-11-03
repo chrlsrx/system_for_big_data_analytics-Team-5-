@@ -18,6 +18,15 @@ public class Item {
 		this.items.put(i, j);
 	}
 	
+	public void Update(Item s) {
+		
+		//We don't use getters, maybe we need
+		this.id = s.id;
+		this.i_im_id = s.i_im_id;
+		this.i_name = s.i_name;
+		this.i_price = s.i_price;
+		this.i_data = s.i_data;
+}
 	//Copy Constructor
 	public Item(Item i) {
 		
