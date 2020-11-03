@@ -1,7 +1,7 @@
 package map670e;
 
 import database.DatabaseConstants;
-import java.util.ArrayList;
+import java.util.Vector;
 import java.util.Date;
 import java.lang.Math;
 
@@ -11,10 +11,10 @@ public class DataGeneration implements DatabaseConstants {
 	private int c_id;
 	private int number_items;
 	private int rbk;
-	private ArrayList<Integer> items;
-	private ArrayList<Integer> ol_suppliers;
-	private ArrayList<Integer> ol_identifiers;
-	private ArrayList<Double> ol_quantity;
+	private Vector<Integer> items;
+	private Vector<Integer> ol_suppliers;
+	private Vector<Integer> ol_identifiers;
+	private Vector<Double> ol_quantity;
 	private Date o_entry;
 
 	public DataGeneration(int w_id) {
@@ -25,10 +25,10 @@ public class DataGeneration implements DatabaseConstants {
 		this.number_items = (int) (Math.random() * (10)) + 5;
 		this.rbk = (int) (Math.random() * (100)) + 1;
 
-		this.items = new ArrayList<Integer>();
-		this.ol_suppliers = new ArrayList<Integer>();
-		this.ol_identifiers = new ArrayList<Integer>();
-		this.ol_quantity = new ArrayList<Double>();
+		this.items = new Vector<Integer>();
+		this.ol_suppliers = new Vector<Integer>();
+		this.ol_identifiers = new Vector<Integer>();
+		this.ol_quantity = new Vector<Double>();
 
 		for (int i = 0; i < number_items; i++) {
 			// setting the item number
@@ -80,15 +80,15 @@ public class DataGeneration implements DatabaseConstants {
 		return this.number_items;
 	}
 
-	public ArrayList<Integer> get_ol_suppliers() {
+	public Vector<Integer> get_ol_suppliers() {
 		return this.ol_suppliers;
 	}
 
-	public ArrayList<Integer> get_ol_identifiers() {
+	public Vector<Integer> get_ol_identifiers() {
 		return this.ol_identifiers;
 	}
 
-	public ArrayList<Double> get_ol_quantities() {
+	public Vector<Double> get_ol_quantities() {
 		return this.ol_quantity;
 	}
 

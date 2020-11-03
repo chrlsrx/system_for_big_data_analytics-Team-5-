@@ -17,7 +17,7 @@ public class Main {
 		LockManager lockm = new LockManager() ;
 		System.out.println("Initialized: Lockmanager");
 		
-		int num_workers =  2 ;
+		int num_workers =  4 ;
 		Scheduler schedule = new Scheduler(num_workers);
 		System.out.println("Initialized: Scheduler, workers:" + num_workers);
 		
@@ -27,11 +27,11 @@ public class Main {
 		System.out.println("Id of the unique warehouse: " + wh_hash);
 		
 
-		int num_trans = 100;
+		int num_trans = 10000;
 		ArrayList<NewOrderTransactionLock> transactions  = new ArrayList<NewOrderTransactionLock>();
 		for (int cnt = 0; cnt < num_trans; cnt++) {
 			DataGeneration data = new DataGeneration(wh_hash) ;
-			NewOrderTransactionLock transaction = new NewOrderTransactionLock(cnt, wh.getId(), db, lockm);
+			NewOrderTransactionLock transaction = new NewOrderTransactionLock(cnt, wh.getId(), db, lockm, schedule);
 			transactions.add(transaction) ;
 		}
 		schedule.setTransactions(transactions) ;

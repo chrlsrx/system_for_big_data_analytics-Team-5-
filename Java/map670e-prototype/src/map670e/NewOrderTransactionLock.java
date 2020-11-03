@@ -3,7 +3,7 @@ package map670e;
 import database.*;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
+import java.util.Vector;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -15,14 +15,16 @@ public class NewOrderTransactionLock implements Runnable {
 	private LockManager lockmanager;
 	private DataGeneration data;
 	private LocalTime ts;
+	private Scheduler sch ;
 
-	public NewOrderTransactionLock(int transaction_id, int w_id, Database d, LockManager lockmanager) {
+	public NewOrderTransactionLock(int transaction_id, int w_id, Database d, LockManager lockmanager, Scheduler sch) {
 		this.transaction_id = transaction_id;
 		this.w_id = w_id;
 		this.data = new DataGeneration(w_id);
 		this.db = d;
 		this.lockmanager = lockmanager;
 		this.ts = LocalTime.now() ;
+		this.sch = sch ;
 	}
 
 	
@@ -51,11 +53,12 @@ public class NewOrderTransactionLock implements Runnable {
 		ReadLock read1 = new ReadLock(this.transaction_id, this.db, this.lockmanager, fake_wh.hashCode(), fake_wh, Types.WAREHOUSE, this.ts);
 		Status status = read1.applyLock() ;
 		if (status == Status.ABORT) {
+			this.sch.retry(this) ;
 			return false ;
 		} else if (status == Status.WAIT) {
 			System.out.println("Transaction " + this.transaction_id + " waits a bit");
 			TimeUnit.MILLISECONDS.sleep(300);
-			this.ts = LocalTime.now() ; // update TimeStamp of Operation -> to check later
+			//this.ts = LocalTime.now() ; // update TimeStamp of Operation -> to check later
 			status = read1.applyLock() ;
 		}
 		
@@ -75,11 +78,13 @@ public class NewOrderTransactionLock implements Runnable {
 		ReadLock read2 = new ReadLock(this.transaction_id, this.db, this.lockmanager, d_code, fake_d, Types.DISTRICT, this.ts);
 		status = read2.applyLock() ;
 		if (status == Status.ABORT) {
+			this.lockmanager.remove_locks(w, true, this.transaction_id) ; // Lock on the Warehouse
+			this.sch.retry(this) ;
 			return false ;
 		} else if (status == Status.WAIT) {
 			System.out.println("Transaction " + this.transaction_id + " waits a bit");
 			TimeUnit.MILLISECONDS.sleep(300);
-			this.ts = LocalTime.now() ; // update TimeStamp of Operation -> to check later
+			//this.ts = LocalTime.now() ; // update TimeStamp of Operation -> to check later
 			status = read2.applyLock() ;
 		}
 		
@@ -100,11 +105,14 @@ public class NewOrderTransactionLock implements Runnable {
 		ReadLock read3 = new ReadLock(this.transaction_id, this.db, this.lockmanager, c_code, fake_c, Types.CUSTOMER, this.ts);
 		status = read3.applyLock() ;
 		if (status == Status.ABORT) {
+			this.lockmanager.remove_locks(d, true, this.transaction_id) ; // Lock on the District
+			this.lockmanager.remove_locks(w, true, this.transaction_id) ; // Lock on the Warehouse
+			this.sch.retry(this) ;
 			return false ;
 		} else if (status == Status.WAIT) {
 			System.out.println("Transaction " + this.transaction_id + " waits a bit");
 			TimeUnit.MILLISECONDS.sleep(300);
-			this.ts = LocalTime.now() ; // update TimeStamp of Operation -> to check later
+			//this.ts = LocalTime.now() ; // update TimeStamp of Operation -> to check later
 			status = read3.applyLock() ;
 		}
 
@@ -133,11 +141,13 @@ public class NewOrderTransactionLock implements Runnable {
 		WriteLock write1 = new WriteLock(this.transaction_id, this.db, this.lockmanager, ord, Types.ORDER, this.ts);
 		status = write1.applyLock() ;
 		if (status == Status.ABORT) {
+			this.sch.retry(this) ;
+			
 			return false ;
 		} else if (status == Status.WAIT) {
 			System.out.println("Transaction " + this.transaction_id + " waits a bit");
 			TimeUnit.MILLISECONDS.sleep(300);
-			this.ts = LocalTime.now() ; // update TimeStamp of Operation -> to check later
+			//this.ts = LocalTime.now() ; // update TimeStamp of Operation -> to check later
 			status = write1.applyLock() ;
 		}
 		write1.apply();
@@ -147,6 +157,7 @@ public class NewOrderTransactionLock implements Runnable {
 		WriteLock write2 = new WriteLock(this.transaction_id, this.db, this.lockmanager, nwd, Types.NEWORDER, this.ts);
 		status = write2.applyLock() ;
 		if (status == Status.ABORT) {
+			this.sch.retry(this) ;
 			return false ;
 		} else if (status == Status.WAIT) {
 			System.out.println("Transaction " + this.transaction_id + " waits a bit");
@@ -158,15 +169,15 @@ public class NewOrderTransactionLock implements Runnable {
 		cnt++;
 		
 		// ???
-		ArrayList<Integer> ol_identifiers = data.get_ol_identifiers();
-		ArrayList<Integer> ol_suppliers = data.get_ol_suppliers();
-		ArrayList<Double> quantity = data.get_ol_quantities();
+		Vector<Integer> ol_identifiers = data.get_ol_identifiers();
+		Vector<Integer> ol_suppliers = data.get_ol_suppliers();
+		Vector<Double> quantity = data.get_ol_quantities();
 		int number_items = data.get_number_items();
 		
 
 		
 		
-		for (int i = 0; i < number_items; i++) {
+		for (int i = 0; i < number_items-1; i++) {
 			int item_id = ol_identifiers.get(i);
 			int supplier_id = ol_suppliers.get(i);
 			if (ol_identifiers.get(i) == null) {
@@ -179,11 +190,12 @@ public class NewOrderTransactionLock implements Runnable {
 			ReadLock read4 = new ReadLock(this.transaction_id, this.db, this.lockmanager, code_item, fake_i, Types.ITEM, this.ts);
 			status = read4.applyLock() ;
 			if (status == Status.ABORT) {
+				this.sch.retry(this) ;
 				return false ;
 			} else if (status == Status.WAIT) {
 				System.out.println("Transaction " + this.transaction_id + " waits a bit");
 				TimeUnit.MILLISECONDS.sleep(300);
-				this.ts = LocalTime.now() ; // update TimeStamp of Operation -> to check later
+				//this.ts = LocalTime.now() ; // update TimeStamp of Operation -> to check later
 				status = read4.applyLock() ;
 			}
 			Item it = (Item) read4.apply();
@@ -201,11 +213,12 @@ public class NewOrderTransactionLock implements Runnable {
 			ReadLock read5 = new ReadLock(this.transaction_id, this.db, this.lockmanager, code_stock, fake_s, Types.STOCK, this.ts);
 			status = read5.applyLock() ;
 			if (status == Status.ABORT) {
+				this.sch.retry(this) ;
 				return false ;
 			} else if (status == Status.WAIT) {
 				System.out.println("Transaction " + this.transaction_id + " waits a bit");
 				TimeUnit.MILLISECONDS.sleep(300);
-				this.ts = LocalTime.now() ; // update TimeStamp of Operation -> to check later
+				//this.ts = LocalTime.now() ; // update TimeStamp of Operation -> to check later
 				status = read5.applyLock() ;
 			}
 			Stock s = (Stock) read5.apply();
@@ -225,12 +238,13 @@ public class NewOrderTransactionLock implements Runnable {
 			WriteLock write3 = new WriteLock(this.transaction_id, this.db, this.lockmanager, fake_s, Types.STOCK, this.ts);
 			status = write3.applyLock() ;
 			if (status == Status.ABORT) {
+				this.sch.retry(this) ;
 				return false ;
 			} else if (status == Status.WAIT) {
 				System.out.println("WESHSS: " + item_id + "," + supplier_id);
 				System.out.println("Transaction " + this.transaction_id + " waits a bit");
 				TimeUnit.MILLISECONDS.sleep(300);
-				this.ts = LocalTime.now() ; // update TimeStamp of Operation -> to check later
+				//this.ts = LocalTime.now() ; // update TimeStamp of Operation -> to check later
 				status = write3.applyLock() ;
 			}
 			if (s_quantity > quantity.get(i) + 10) {
@@ -249,11 +263,12 @@ public class NewOrderTransactionLock implements Runnable {
 			WriteLock write4 = new WriteLock(this.transaction_id, this.db, this.lockmanager, fake_i, Types.ITEM, this.ts);
 			status = write4.applyLock() ;
 			if (status == Status.ABORT) {
+				this.sch.retry(this) ;
 				return false ;
 			} else if (status == Status.WAIT) {
 				System.out.println("Transaction " + this.transaction_id + " waits a bit");
 				TimeUnit.MILLISECONDS.sleep(300);
-				this.ts = LocalTime.now() ; // update TimeStamp of Operation -> to check later
+				//this.ts = LocalTime.now() ; // update TimeStamp of Operation -> to check later
 				status = write4.applyLock() ;
 			}
 			double ol_amount = quantity.get(i) * i_price;
@@ -272,11 +287,12 @@ public class NewOrderTransactionLock implements Runnable {
 			WriteLock write5 = new WriteLock(this.transaction_id, this.db, this.lockmanager, ol, Types.ORDER_LINE, this.ts);
 			status = write5.applyLock() ;
 			if (status == Status.ABORT) {
+				this.sch.retry(this) ;
 				return false ;
 			} else if (status == Status.WAIT) {
 				System.out.println("Transaction " + this.transaction_id + " waits a bit");
 				TimeUnit.MILLISECONDS.sleep(300);
-				this.ts = LocalTime.now() ; // update TimeStamp of Operation -> to check later
+				//this.ts = LocalTime.now() ; // update TimeStamp of Operation -> to check later
 				status = write5.applyLock() ;
 			}
 			write5.apply();
@@ -294,6 +310,7 @@ public class NewOrderTransactionLock implements Runnable {
 		System.out.println("The transaction " + transaction_id + " is now releasing its last locks.");
 		this.lockmanager.remove_locks(nwd, false, this.transaction_id) ; // Lock on the NewOrder
 		this.lockmanager.remove_locks(ord, false, this.transaction_id) ; // Lock on the Order
+		this.lockmanager.remove_locks(c, true, this.transaction_id) ;	// Lock on the client
 		this.lockmanager.remove_locks(d, true, this.transaction_id) ; // Lock on the District
 		this.lockmanager.remove_locks(w, true, this.transaction_id) ; // Lock on the Warehouse
 		
