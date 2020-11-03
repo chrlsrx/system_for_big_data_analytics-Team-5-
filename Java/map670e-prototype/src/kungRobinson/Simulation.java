@@ -36,10 +36,13 @@ public class Simulation {
 			Customer trump = new Customer(1, 1, 1);
 			
 			
-			String[] assignement = {"c_last:trump", "c_discount:100.0"};
+			//String[] assignement = {"c_last:trump", "c_discount:100.0"};
 			
+			String[] assignement = {"c_discount:100.0"};
 			trump.Update(assignement);
 			
+			System.out.println(trump.getClast());
+
 			
 			
 						

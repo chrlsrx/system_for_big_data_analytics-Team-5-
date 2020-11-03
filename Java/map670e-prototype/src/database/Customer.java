@@ -1,6 +1,5 @@
 package database;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
@@ -18,6 +17,7 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
+import java.lang.reflect.*;
 
 public class Customer  {
 	
@@ -31,7 +31,6 @@ public class Customer  {
 	private final int c_id ;
 	private final int c_d_id ;
 	private final int c_w_id ;
-	
 	private String c_first = "" ;		// useless ? t16
 	private String c_middle = "" ;		// useless ? t2
 	private String c_last = "";			// useless ? t16
@@ -118,7 +117,40 @@ public class Customer  {
 		
 	}
 	
-
+//	@SuppressWarnings("all")
+//	public void Update(String c_first, String c_last) {
+//		
+//		this.c_first = c_first;		
+//    	this.c_middle = c_middle;	
+//    	this.c_last = c_last ;		
+//    	this.c_street1 = c_street1 ;	
+//    	this.c_street2 = c_street2 ;		
+//    	this.c_city = c_city;			
+//    	this.c_state = c_state;
+//    	this.c_zip = c_zip;			
+//    	this.c_phone = c_phone ;		
+//    	this.c_since = c_since ;
+//    	this.c_credit = c_credit ;		
+//		this.c_credit_lim = c_credit_lim;
+//		this.c_discount = c_discount;
+//		this.c_balance = c_balance ;
+//		this.c_ytd_payment = c_ytd_payment;
+//		this.c_payment_cnt = c_payment_cnt;
+//		this.c_delivry_cnt = c_delivry_cnt;
+//		this.c_data = c_data;	    
+//	
+//		    
+//		    
+//				
+//		    	
+//			  
+//			    
+//		    
+//			
+//			
+//		    
+//		}
+	
 @SuppressWarnings("all")
 public void Update(String[] args) {
 	
@@ -135,53 +167,70 @@ public void Update(String[] args) {
 			String code = "";
 			
 			
-
+			
 			//This line complies the following code
 			//it casts the value of an attribute based on its type
-			
-			if(Strings.contains(keyValue[0])) {
-				code = String.format("this.%s = \"%s\";", keyValue[0], keyValue[1]);
+
+				if(Strings.contains(keyValue[0])) {
+					code = String.format("this.%s = \"%s\";", keyValue[0], keyValue[1]);
+
+				else if (Integers.contains(keyValue[0]))
+				{
+					code = String.format("this.%s = parseInt(\"%s\");", keyValue[0], keyValue[1]);
+
+				}
+				else if (Reals.contains(keyValue[0]))
+				{
+					code = String.format("this.%s = parseFloat(\"%s\");", keyValue[0], keyValue[1]);
+				}
 				
-			}
-			else if (Integers.contains(keyValue[0]))
-			{
-				code = String.format("this.%s = parseInt(\"%s\");", keyValue[0], keyValue[1]);
+				else {
+					//code = String.format("this.%s = Date.parse(\"%s\");", keyValue[0], keyValue[1]);
+					//updatedAttribute.setDate(this, Date.parse(keyValue[1]));				
+				}
 
-			}
-			else if (Reals.contains(keyValue[0]))
-			{
-				code = String.format("this.%s = parseFloat(\"%s\");", keyValue[0], keyValue[1]);
 
-			}
 			
-			else {
-				code = String.format("this.%s = Date.parse(\"%s\");", keyValue[0], keyValue[1]);
-
-			}
 			
-			//System.out.print(code);
+			
+			System.out.print(code);
 
 			ScriptEngineManager mgr = new ScriptEngineManager();
-		    ScriptEngine engine = mgr.getEngineByName("JavaScript");
+		    ScriptEngine engine = mgr.getEngineByName("javascript");
+		    
+		   
 		    
 		    try {
-				System.out.println(engine.eval(code));
+				engine.eval(code);
+				engine.put(String.format("this.%s", keyValue[0]), keyValue[1]);
 			} catch (ScriptException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		    
-		   
-
-		   
+		    
+			
+		    
+		  
 		    
 	    }
 		
 		
-
+	    
 	}
 
+	private Field getField(String string) {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+	public String getClast() {
+		return this.c_last;
+	}
 	
+	public Float getCdiscount() {
+		return this.c_discount;
+	}
 	
 	@Override
 	public int hashCode() {
