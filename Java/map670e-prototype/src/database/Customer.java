@@ -86,34 +86,33 @@ public class Customer  {
 		this.c_payment_cnt = c.c_payment_cnt;
 		this.c_delivry_cnt = c.c_delivry_cnt;
 		this.c_data = c.c_data;	
-		
+		this.c_orders = new HashMap<Integer, Order>() ;
 		this.c_orders.putAll(c.c_orders);
 		
 	}
 	
-	public static void Commit(Customer c_db, Customer c_local) {
+	public  void Update(Customer c) {
 		
+		this.c_first = c.c_first;		
+		this.c_middle = c.c_middle;	
+		this.c_last = c.c_last ;		
+		this.c_street1 = c.c_street1 ;	
+		this.c_street2 = c.c_street2 ;		
+		this.c_city = c.c_city;			
+		this.c_state = c.c_state;
+		this.c_zip = c.c_zip;			
+		this.c_phone = c.c_phone ;		
+		this.c_since = c.c_since ;
+		this.c_credit = c.c_credit ;		
+		this.c_credit_lim = c.c_credit_lim;
+		this.c_discount = c.c_discount;
+		this.c_balance = c.c_balance ;
+		this.c_ytd_payment = c.c_ytd_payment;
+		this.c_payment_cnt = c.c_payment_cnt;
+		this.c_delivry_cnt = c.c_delivry_cnt;
+		this.c_data = c.c_data;	
 		
-		c_db.c_first = c_local.c_first;		
-		c_db.c_middle = c_local.c_middle;	
-		c_db.c_last = c_local.c_last ;		
-		c_db.c_street1 = c_local.c_street1 ;	
-		c_db.c_street2 = c_local.c_street2 ;		
-		c_db.c_city = c_local.c_city;			
-		c_db.c_state = c_local.c_state;
-		c_db.c_zip = c_local.c_zip;			
-		c_db.c_phone = c_local.c_phone ;		
-		c_db.c_since = c_local.c_since ;
-		c_db.c_credit = c_local.c_credit ;		
-		c_db.c_credit_lim = c_local.c_credit_lim;
-		c_db.c_discount = c_local.c_discount;
-		c_db.c_balance = c_local.c_balance ;
-		c_db.c_ytd_payment = c_local.c_ytd_payment;
-		c_db.c_payment_cnt = c_local.c_payment_cnt;
-		c_db.c_delivry_cnt = c_local.c_delivry_cnt;
-		c_db.c_data = c_local.c_data;	
-		
-		c_db.c_orders.putAll(c_local.c_orders);
+		this.c_orders.putAll(c.c_orders);
 		
 	}
 	

@@ -6,7 +6,7 @@ import java.util.List;
 import database.*;
 import map670e.DataGeneration; 
 
-public class Transaction_2 {
+public class Transaction_optimistic_cc {
 	// Constants : phase names
 	public static final String phase_READ = "READ";
 	public static final String phase_VALIDATE = "VALIDATE";
@@ -32,8 +32,9 @@ public class Transaction_2 {
 	private NewOrder nwd;
 	private Order ord;
 	private Order_Line ol;
+	private int cnt;
 
-	public Transaction_2(final int id, int w_id, Database db) {
+	public Transaction_optimistic_cc(final int id, int w_id, Database db) {
 		this.id = id;
 		this.phase = "";
 		this.ts_start_read = 0;
@@ -94,15 +95,15 @@ public class Transaction_2 {
 	}
 
 
-	private boolean read(Database db) {
+	private boolean read() {
 		// READ phase
-		int cnt = 0;
+		this.cnt = 0;
 		double total_amount = 0;
 		
 		Warehouse fake_w = new Warehouse(this.w_id);
 		Warehouse w = (Warehouse) db.getObject(fake_w.hashCode(), Types.WAREHOUSE);
 		if (w == null) {
-			System.out.println("ERROR : warehouse does not exist (transaction " + this.transaction_id + ")" );
+			System.out.println("ERROR : warehouse does not exist (transaction " + this.id + ")" );
 			return false ;
 		}
 		double tax = w.get_w_tax(); // we get the tax
@@ -115,7 +116,7 @@ public class Transaction_2 {
 		
 		District d = (District) db.getObject(fake_d.hashCode(), Types.DISTRICT);
 		if (d == null) {
-			System.out.println("ERROR : district does not exist (transaction " + this.transaction_id + ")" );
+			System.out.println("ERROR : district does not exist (transaction " + this.id + ")" );
 			return false ;
 		}
 		double d_tax = d.get_d_tax();
@@ -129,7 +130,7 @@ public class Transaction_2 {
 		
 		Customer c = (Customer) db.getObject(fake_c.hashCode(), Types.CUSTOMER);
 		if (c == null) {
-			System.out.println("ERROR : customer does not exist (transaction " + this.transaction_id + ")" );
+			System.out.println("ERROR : customer does not exist (transaction " + this.id + ")" );
 			return false ;
 		}
 
@@ -177,7 +178,7 @@ public class Transaction_2 {
 			this.write_set.add((Item) db.getObject(code_item, Types.ITEM));
 			
 			if (it == null) {
-				System.out.println("ERROR : item n°" + i + " does not exist (transaction " + this.transaction_id + ")" );
+				System.out.println("ERROR : item n°" + i + " does not exist (transaction " + this.id + ")" );
 				return false ;
 			}
 			double i_price = it.get_price();
@@ -196,7 +197,7 @@ public class Transaction_2 {
 			this.write_set.add((Stock) db.getObject(code_stock, Types.STOCK));
 			
 			if (s == null) {
-				System.out.println("ERROR : stock does not exist (transaction " + this.transaction_id + ")" );
+				System.out.println("ERROR : stock does not exist (transaction " + this.id + ")" );
 				return false ;
 			}
 			
@@ -242,9 +243,9 @@ public class Transaction_2 {
 		
 	}
 
-	private boolean validate(ArrayList<Transaction_2> other_transactions) {
+	private boolean validate(ArrayList<Transaction_optimistic_cc> other_transactions) {
 		for (int i = 0; i < other_transactions.size(); i++) {
-			Transaction_2 transaction = other_transactions.get(i);
+			Transaction_optimistic_cc transaction = other_transactions.get(i);
 			boolean test_1 = false;
 			boolean test_2 = false;
 			boolean test_3 = false;
@@ -286,23 +287,27 @@ public class Transaction_2 {
 			
 			case ITEM:
 				((Item) this.all_targets.get(i)).Update((Item) this.all_targets_copy.get(i));
+				cnt++;
 
 			case STOCK:
 				((Stock) this.all_targets.get(i)).Update((Stock) this.all_targets_copy.get(i));
+				cnt++;
 				
 			default:
 				return false;
 			}
+			
 				
 		}
 		
 		this.db.setObject(this.nwd, Types.NEWORDER);
 		this.db.setObject(this.ord, Types.ORDER);
 		this.db.setObject(this.ol, Types.ORDER_LINE);
+		cnt+=3;
 		return true;
 	}
 
-	public boolean apply_next(ArrayList<Transaction> other_transactions) {
+	public boolean apply_next(ArrayList<Transaction_optimistic_cc> other_transactions) {
 		if (this.is_finished()) {
 			return true;
 		}
@@ -347,7 +352,6 @@ public class Transaction_2 {
 	public void restart() {
 		// Restart the operation
 		System.out.println("Restarting " + this.id);
-		this.operation_iter = 0;
 		this.phase = "";
 		this.ts_start_read = 0;
 		this.ts_start_validate = 0;

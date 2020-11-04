@@ -42,6 +42,41 @@ public class Database implements DatabaseConstants {
 	    // ATTENTION : DO THE SAME FOR THE OTHER CLASSES
 	}
 	
+	public Database(Database db)
+	{
+		this.warehouses = new HashMap<Integer, Warehouse>();
+		this.districts = new HashMap<Integer, District>();
+		this.customers = new HashMap<Integer,Customer>();
+		
+		this.warehouses.putAll(db.warehouses);
+		this.districts.putAll(db.districts);
+		this.customers.putAll(db.customers);
+
+	}
+
+	public void Update(Database db)
+	{
+		
+		for(Integer key: this.warehouses.keySet())
+		{
+			Warehouse obj = this.warehouses.get(key);
+			obj.Update(db.warehouses.get(key));
+		}
+		
+		for(Integer key: this.districts.keySet())
+		{
+			District obj = this.districts.get(key);
+			obj.Update(db.districts.get(key));
+		}
+		
+		for(Integer key: this.customers.keySet())
+		{
+			Customer obj = this.customers.get(key);
+			obj.Update(db.customers.get(key));
+		}
+		
+	}
+	
 	public Object getObject(int target_hash, Types target_type) {
 
 		switch (target_type) {

@@ -67,20 +67,20 @@ public class Warehouse implements DatabaseConstants {
 		
 	}
 	
-	public static void Commit(Warehouse w_db, Warehouse w_local) {
+	public void Update(Warehouse w) {
 		
 		
-		w_db.w_name = w_local.w_name;
-		w_db.w_street1 = w_local.w_street1;
-		w_db.w_street2 = w_local.w_street2;
-		w_db.w_city = w_local.w_city;
-		w_db.w_state = w_local.w_state;
-		w_db.w_zip = w_local.w_zip;
-		w_db.w_tax = w_local.w_tax;
-		w_db.w_ytd = w_local.w_ytd;
+		this.w_name = w.w_name;
+		this.w_street1 = w.w_street1;
+		this.w_street2 = w.w_street2;
+		this.w_city = w.w_city;
+		this.w_state = w.w_state;
+		this.w_zip = w.w_zip;
+		this.w_tax = w.w_tax;
+		this.w_ytd = w.w_ytd;
 		
 		
-		w_db.w_districts.putAll(w_local.w_districts);
+		this.w_districts.putAll(w.w_districts);
 		
 	}
 	

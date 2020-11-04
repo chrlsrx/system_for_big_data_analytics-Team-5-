@@ -58,21 +58,21 @@ public class District implements DatabaseConstants {
 		
 	}
 	
-	public static void Commit(District d_db, District d_local) {
+	public  void Update(District d) {
 		
 		
-		d_db.d_name = d_local.d_name ;		
-		d_db.d_street1 = d_local.d_street1 ;	
-		d_db.d_street2 = d_local.d_street2 ;
-		d_db.d_city = d_local.d_city ;		
-		d_db.d_state = d_local.d_state ;	
-		d_db.d_zip = d_local.d_zip;	
-		d_db.d_tax = d_local.d_tax ;			
-		d_db.d_ytd = d_local.d_ytd ;			
-		d_db.d_next_o_id = d_local.d_next_o_id ;	
+		this.d_name = d.d_name ;		
+		this.d_street1 = d.d_street1 ;	
+		this.d_street2 = d.d_street2 ;
+		this.d_city = d.d_city ;		
+		this.d_state = d.d_state ;	
+		this.d_zip = d.d_zip;	
+		this.d_tax = d.d_tax ;			
+		this.d_ytd = d.d_ytd ;			
+		this.d_next_o_id = d.d_next_o_id ;	
 		
 		
-		d_db.d_clients.putAll(d_local.d_clients);
+		this.d_clients.putAll(d.d_clients);
 		
 	}
 	
