@@ -3,6 +3,7 @@ package map670e;
 import database.*;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class NewOrderTransaction {
 	
@@ -71,9 +72,9 @@ public class NewOrderTransaction {
 		cnt++ ;
 		
 		// ???
-		ArrayList<Integer> ol_identifiers = data.get_ol_identifiers() ;
-		ArrayList<Integer> ol_suppliers = data.get_ol_suppliers() ;
-		ArrayList<Double> quantity = data.get_ol_quantities() ;
+		Vector<Integer> ol_identifiers = data.get_ol_identifiers() ;
+		Vector<Integer> ol_suppliers = data.get_ol_suppliers() ;
+		Vector<Double> quantity = data.get_ol_quantities() ;
 		int number_items = data.get_number_items() ;
 		double total_amount = 0;
 		
@@ -82,7 +83,7 @@ public class NewOrderTransaction {
 			int supplier_id = ol_suppliers.get(i) ;
 			if (ol_identifiers.get(i) == null) {
 				System.out.println("Value not found") ;
-				return ; // Maybe return something, will see later
+				break ; // Maybe return something, will see later
 			}
 			// We read the item
 			int code_item = (new Item(item_id)).hashCode() ;
@@ -173,9 +174,9 @@ public class NewOrderTransaction {
 				break;
 			}
 		}
-		ArrayList<Integer> ol_identifiers = data.get_ol_identifiers();
-		ArrayList<Integer> ol_suppliers = data.get_ol_suppliers();
-		ArrayList<Double> quantity = data.get_ol_quantities();
+		Vector<Integer> ol_identifiers = data.get_ol_identifiers();
+		Vector<Integer> ol_suppliers = data.get_ol_suppliers();
+		Vector<Double> quantity = data.get_ol_quantities();
 		int number_items = data.get_number_items();
 		db.setObject(ord, Types.ORDER);
 		db.setObject(nwd, Types.NEWORDER);
