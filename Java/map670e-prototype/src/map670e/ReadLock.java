@@ -20,11 +20,11 @@ public class ReadLock extends Read {
 	}
 
 	// This isn't clean, because there is also an apply function too
-	public Status applyLock() {
+	public synchronized Status applyLock() {
 			
 
 		// Check if X locked & deadlock prevention
-		Status status = this.lockmanager.isXLocked(this.target, this.id, this.time) ;
+		Status status = this.lockmanager.isXLocked(this.target, this.transaction_id, this.time) ;
 		if (status == Status.WAIT) {
 			return Status.WAIT ;	// Wait and retry
 		} else if (status == Status.ABORT) {
@@ -33,19 +33,8 @@ public class ReadLock extends Read {
 			
 			
 		// Ask a read_lock since status == ACCEPTED
-		this.lockmanager.add_lock(this.target, true, this.id, this.time) ;
-			
-		/* OLD VERSION, KEEP IN CASE */
-		/*
-		// We have the lock, can write.
-		this.has_applied = this.db.setObject(target, target_type) ;
-			
-		// We want to make sure that lock has been added, and that we have read the value
-		// Because if not, one of those tasks failed unexpectedly : ABORT
-		if (this.has_applied && accepted) {
-			status = Status.ABORT ;
-		}
-		*/
+		this.lockmanager.add_lock(this.target, true, this.transaction_id, this.time) ;
+
 		return status ;
 	}
 

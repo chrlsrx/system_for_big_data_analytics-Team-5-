@@ -1,57 +1,56 @@
 package database;
 
-import java.util.HashMap;
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Set;
 
 public class Database implements DatabaseConstants {
 
-	private HashMap<Integer, Customer> customers;
-	private HashMap<Integer, District> districts;
-	private HashMap<Integer, History> histories;
-	private HashMap<Integer, Item> items;
-	private HashMap<Integer, NewOrder> neworders;
-	private HashMap<Integer, Order_Line> orderlines;
-	private HashMap<Integer, Order> orders;
-	private HashMap<Integer, Stock> stocks;
-	private HashMap<Integer, Warehouse> warehouses;
+	private Hashtable<Integer, Customer> customers;
+	private Hashtable<Integer, District> districts;
+	private Hashtable<Integer, History> histories;
+	private Hashtable<Integer, Item> items;
+	private Hashtable<Integer, NewOrder> neworders;
+	private Hashtable<Integer, Order_Line> orderlines;
+	private Hashtable<Integer, Order> orders;
+	private Hashtable<Integer, Stock> stocks;
+	private Hashtable<Integer, Warehouse> warehouses;
 
 	public Database() {
 
-		this.warehouses = new HashMap<Integer, Warehouse>();
-		this.districts = new HashMap<Integer, District>();
-		this.customers = new HashMap<Integer,Customer>();
-		this.histories = new HashMap<Integer,History>();
-		this.items = new HashMap<Integer,Item>();
-		this.neworders = new HashMap<Integer,NewOrder>();
-		this.orderlines = new HashMap<Integer, Order_Line>();
-		this.orders = new HashMap<Integer, Order>() ;
-		this.stocks = new HashMap<Integer, Stock>() ;
+		this.warehouses = new Hashtable<Integer, Warehouse>();
+		this.districts = new Hashtable<Integer, District>();
+		this.customers = new Hashtable<Integer,Customer>();
+		this.histories = new Hashtable<Integer,History>();
+		this.items = new Hashtable<Integer,Item>();
+		this.neworders = new Hashtable<Integer,NewOrder>();
+		this.orderlines = new Hashtable<Integer, Order_Line>();
+		this.orders = new Hashtable<Integer, Order>() ;
+		this.stocks = new Hashtable<Integer, Stock>() ;
 
 		for (int i = 0; i < num_warehouses; i++) {
 			// Create a new warehouse
 			Warehouse wh = new Warehouse(i);
-			// Add the new warehouse to the warehouses HashMap
+			// Add the new warehouse to the warehouses Hashtable
 			warehouses.put(wh.hashCode(), wh) ;
-			// Populate the warehouses and add the districts to the HashMap
+			// Populate the warehouses and add the districts to the Hashtable
 			districts.putAll(wh.populate_district(num_districts)) ;
 			// Populate the stocks
 			stocks.putAll(wh.populate_stock(num_stocks)) ;
 			// Populate the items (here equality because the items are common to the warehouses
 			items = wh.populate_item(num_items) ;
+			
+			// create a set view
+		      Set<Integer> keys = districts.keySet();
+		      for(Integer key: keys){
+		    	  customers.putAll(districts.get(key).populate_clients(num_customers)); ;
+		        }
+  
 		}
 		
-		// Iterate through the districts hashmap, and populate them
-		Iterator<Entry<Integer, District>> it = this.districts.entrySet().iterator();
-	    while (it.hasNext()) {
-	            HashMap.Entry<Integer, District> pair = (HashMap.Entry<Integer, District>) it.next();
-	            // Populate and add
-	            customers.putAll(pair.getValue().populate_clients(num_customers));
-	        }
-	    for (int k = 1; k <= num_items; k++) {
-	    	Item item = new Item(k);
-	    	items.put(item.hashCode(),item);
-	    }   
+		  
 	    // ATTENTION : DO THE SAME FOR THE OTHER CLASSES
 
 	}
@@ -156,14 +155,14 @@ public class Database implements DatabaseConstants {
  * 
  * 3. Poursuivre la génération en cascade des données, sur le modèle de ce qui est fait juste au dessus
  * 
- * 4. <Optionnel> Créer une méthode dans Database qui sauvegarde une hashmap en csv (avec les valeurs ET les clés*)
- * pour chaque hashmap (un district.csv, un hashmap.csv etc, le tout sauvegarder dans le dossier ressources ?)
+ * 4. <Optionnel> Créer une méthode dans Database qui sauvegarde une Hashtable en csv (avec les valeurs ET les clés*)
+ * pour chaque Hashtable (un district.csv, un Hashtable.csv etc, le tout sauvegarder dans le dossier ressources ?)
  * 
- * 5. <Optionnel> Créer une méthode dans Database qui charge une hashmap et ses entités à partir d'un csv. 
+ * 5. <Optionnel> Créer une méthode dans Database qui charge une Hashtable et ses entités à partir d'un csv. 
  * 
  * 6. <Optionnel> Créer une méthode qui charge UNE entité à partir d'une ligne du csv : l'idée serait que lorsqu'on fait un
  * "select" (client), on crée un client avec la clé primaire, on calcule le hashcode, on cherche dans clients.csv
- * la ligne avec le même hashmap au début, puis on charge le client correspondant à la ligne
+ * la ligne avec le même Hashtable au début, puis on charge le client correspondant à la ligne
  * 
  * 
  */

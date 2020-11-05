@@ -30,7 +30,7 @@ public class Write extends Operation {
 		this.target_type = target_type ;
 	}
 	
-	public boolean apply() {
+	public synchronized boolean apply() {
 		this.has_applied = this.db.setObject(this.target, this.target_type) ;
 		return this.has_applied ;
 	}

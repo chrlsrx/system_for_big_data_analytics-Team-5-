@@ -1,6 +1,6 @@
 package database;
 
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Objects;
 
 public class Warehouse implements DatabaseConstants {
@@ -14,8 +14,8 @@ public class Warehouse implements DatabaseConstants {
 	private String w_zip ;		// useless ? t9
 	private double w_tax ;				// useless ?
 	private double w_ytd ;				// useless ?
-	private HashMap<Integer, District> w_districts ;
-	private HashMap<Integer, Stock> w_stocks ;
+	private Hashtable<Integer, District> w_districts ;
+	private Hashtable<Integer, Stock> w_stocks ;
 	
 	public Warehouse(int w_id) {
 		
@@ -31,11 +31,11 @@ public class Warehouse implements DatabaseConstants {
 		this.w_tax = w_tax_min + Math.random() * (w_tax_max - w_tax_min);
 		this.w_ytd = Math.random() * 365; 
 		
-		this.w_districts = new HashMap<Integer, District>() ;
-		this.w_stocks = new HashMap<Integer, Stock>() ;
+		this.w_districts = new Hashtable<Integer, District>() ;
+		this.w_stocks = new Hashtable<Integer, Stock>() ;
 	}
 	
-	public HashMap<Integer, District> populate_district(int num) {
+	public Hashtable<Integer, District> populate_district(int num) {
 		// If we want to avoid the creation in cascade of the instances (otherwise, put in constructor)
 		for (int i = 0; i < num; i++) {
 			District district = new District(i, this.w_id) ;
@@ -44,7 +44,7 @@ public class Warehouse implements DatabaseConstants {
 		return this.w_districts ;
 	}
 	
-	public HashMap<Integer, Stock> populate_stock(int num) {
+	public Hashtable<Integer, Stock> populate_stock(int num) {
 		// If we want to avoid the creation in cascade of the instances (otherwise, put in constructor)
 		for (int i = 0; i < num; i++) {
 			Stock stock = new Stock(i, this.w_id) ;
@@ -53,8 +53,8 @@ public class Warehouse implements DatabaseConstants {
 		return this.w_stocks ;
 	}
 	
-	public HashMap<Integer, Item> populate_item(int num) {
-		HashMap<Integer, Item> items = new HashMap<Integer, Item>() ;
+	public Hashtable<Integer, Item> populate_item(int num) {
+		Hashtable<Integer, Item> items = new Hashtable<Integer, Item>() ;
 		for (int i = 0; i < num; i++) {
 			Item item = new Item(i) ;
 			items.put(item.hashCode(), item) ; 

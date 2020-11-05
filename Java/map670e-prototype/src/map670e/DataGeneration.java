@@ -48,7 +48,7 @@ public class DataGeneration implements DatabaseConstants {
 
 			// setting the supplying warehouse number
 			int x = (int) (Math.random() * (100)) + 1;
-			if (x != 1 && num_warehouses > 1) { // I canged this condition, need to check later
+			if (x == 1 && num_warehouses > 1) { // I canged this condition, need to check later
 				this.ol_suppliers.add((int) (Math.random() * (10)) + 1);
 			} else {
 				this.ol_suppliers.add(this.w_id);

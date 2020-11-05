@@ -23,8 +23,8 @@ public class WriteLock extends Write {
 	 * 		-> but make sure to Xlock it before, since it's a disguised write ;
 	 */
 	
-	private LockManager lockmanager ;
-	private LocalTime time ;
+	protected LockManager lockmanager ;
+	protected LocalTime time ;
 	
 	public WriteLock(int id, Database db, LockManager lockm, Object target, Types target_type, LocalTime time) {
 		
@@ -36,10 +36,10 @@ public class WriteLock extends Write {
 	
 	
 	// This isn't clean, because there is also an apply function too
-	public Status applyLock() {
+	public synchronized Status applyLock() {
 		
 		// Check if X locked & deadlock prevention
-		Status status = this.lockmanager.isXLocked(this.target, this.id, this.time) ;
+		Status status = this.lockmanager.isXLocked(this.target, this.transaction_id, this.time) ;
 		if (status == Status.WAIT) {
 			return Status.WAIT ;	// Wait and retry
 		} else if (status == Status.ABORT) {
@@ -47,7 +47,7 @@ public class WriteLock extends Write {
 		}
 		
 		// Check if S locked & deadlock prevention
-		status = this.lockmanager.isSLocked(this.target, this.id, this.time) ;
+		status = this.lockmanager.isSLocked(this.target, this.transaction_id, this.time) ;
 		if (status == Status.WAIT) {
 			return Status.WAIT ;	// Wait and retry
 		} else if (status == Status.ABORT) {
@@ -55,7 +55,7 @@ public class WriteLock extends Write {
 		}
 		
 		// Ask a read_lock since status == ACCEPTED
-		this.lockmanager.add_lock(this.target, false, this.id, this.time) ;
+		this.lockmanager.add_lock(this.target, false, this.transaction_id, this.time) ;
 		/* OLD VERSION, KEEP IN CASE */
 		/*
 		// We have the lock, can write.

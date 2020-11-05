@@ -13,7 +13,7 @@ public class Read extends Operation {
 		this.target_type = target_type ;
 	}
 	
-	public Object apply() {
+	public synchronized Object apply() {
 		Object true_target = this.db.getObject(this.target_hash, this.target_type) ;
 		if (true_target != null) {
 			this.has_applied = true ;
@@ -25,9 +25,7 @@ public class Read extends Operation {
 		return db;
 	}
 
-	public int getId() {
-		return id;
-	}
+
 
 
 	

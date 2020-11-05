@@ -41,6 +41,11 @@ public class Order {
 	}
 
 	@Override
+	public String toString() {
+		return "Order [o_id=" + o_id + ", o_c_id=" + o_c_id + ", o_d_id=" + o_d_id + ", o_w_id=" + o_w_id + "]";
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;

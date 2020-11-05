@@ -1,6 +1,6 @@
 package map670e;
 
-import java.util.ArrayList;
+import java.util.Vector;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -8,23 +8,24 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 public class Scheduler {
 	private final int num_workers ;
-	private ArrayList<NewOrderTransactionLock> transactions ;
-	private ArrayList<NewOrderTransactionLock> transactions_aborted ;
+	private Vector<NewOrderTransactionLock> transactions ;
+	private Vector<NewOrderTransactionLock> transactions_aborted ;
 	private int cnt_aborts ;
 
 	public Scheduler(final int num_workers) {
 		this.num_workers = num_workers ;
-		this.transactions = new ArrayList<NewOrderTransactionLock>() ;
-		this.transactions_aborted = new ArrayList<NewOrderTransactionLock>() ;
+		this.transactions = new Vector<NewOrderTransactionLock>() ;
+		this.transactions_aborted = new Vector<NewOrderTransactionLock>() ;
 		this.cnt_aborts = 0 ;
 	}
 	
-	public void setTransactions(ArrayList<NewOrderTransactionLock> transactions) {
+	public synchronized void setTransactions(Vector<NewOrderTransactionLock> transactions) {
 		this.transactions = transactions ;
 		this.cnt_aborts = 0 ;
 	}
 	
 	public void retry(NewOrderTransactionLock transaction) {
+		//transaction.refresh_ts() ;
 		this.transactions_aborted.add(transaction) ;
 		this.cnt_aborts++ ;
 	}
@@ -32,9 +33,10 @@ public class Scheduler {
 	public void retry_aborts() {
 		System.out.println("Retrying " + this.transactions_aborted.size() + " transactions.");
 		this.transactions = this.transactions_aborted ;
+		this.cnt_aborts = 0 ;
 	}
 	
-	public void run() throws InterruptedException {
+	public synchronized void run() throws InterruptedException {
 
 	    ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(this.num_workers);
 

@@ -1,6 +1,7 @@
 package map670e;
 
 import java.time.LocalTime;
+import java.util.Objects;
 
 public class Lock {
 	
@@ -26,8 +27,37 @@ public class Lock {
 		return this.l_transaction_id ;
 	}
 	
-	public boolean hasHigherPrio(LocalTime time) {
+	public synchronized boolean hasHigherPrio(LocalTime time) {
 		return (this.l_transaction_ts.compareTo(time) < 0) ; // < 0 If ts < time, so higher prio
 	}
+	
+	public boolean isRead() {
+		return l_on_read ;
+	}
+	
+	@Override
+	public String toString() {
+		return "Lock [l_on_read=" + l_on_read + ", l_transaction_id=" + l_transaction_id + ", l_entity=" + l_entity
+				+ "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(l_entity, l_on_read, l_transaction_id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Lock)) {
+			return false;
+		}
+		Lock other = (Lock) obj;
+		return Objects.equals(l_entity, other.l_entity) && l_on_read == other.l_on_read
+				&& l_transaction_id == other.l_transaction_id;
+	}
+
 	
 }

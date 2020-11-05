@@ -56,6 +56,10 @@ public class District implements DatabaseConstants {
 	public int get_d_next_o_id() {
 		return this.d_next_o_id;
 	}
+	
+	public void inc_next_o_id() {
+		this.d_next_o_id++ ;
+	}
 
 	@Override
 	public int hashCode() {
