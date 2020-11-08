@@ -30,21 +30,23 @@ public class DataGeneration implements DatabaseConstants {
 		this.ol_identifiers = new Vector<Integer>();
 		this.ol_quantity = new Vector<Double>();
 
+		// We fill up the customer's order with items bought
 		for (int i = 0; i < number_items; i++) {
-			// setting the item number
+			// i_num is the product reference
 			int i_num = (((int) (Math.random() * (8191)))
-					| ((int) (Math.random() * (100000)) + 1) + (int) (Math.random() * (8191))) % (100000) + 1;
+					| ((int) (Math.random() * (100000))) + (int) (Math.random() * (8191)));
+			i_num = i_num % num_items; // references are integers between 0 and num_items, the number of items in the
+										// warehouse
+			// Add it to the basket
+			this.ol_identifiers.add(i_num);
 
-			if (i < number_items - 1) {
-				this.ol_identifiers.add(i_num);
-			} else {
-				if (this.rbk == 1) {
-					// set the item to an unused value -> "rolling back the current database
-					// transaction" as mentioned in TPC-C file.
-				} else {
-					this.ol_identifiers.add(i_num);
-				}
-			}
+			// useless conditions, we let this here for legacy
+			/*
+			 * if (i < number_items) { this.ol_identifiers.add(i_num); } else { if (this.rbk
+			 * == 1) { // set the item to an unused value -> "rolling back the current
+			 * database // transaction" as mentioned in TPC-C file. } else {
+			 * //this.ol_identifiers.add(i_num); } }
+			 */
 
 			// setting the supplying warehouse number
 			int x = (int) (Math.random() * (100)) + 1;
@@ -63,7 +65,7 @@ public class DataGeneration implements DatabaseConstants {
 		// A quoi correspond cette boucle for ?
 		for (int j = 0; j < number_items; j++) {
 			items.add((((int) (Math.random() * (8191)))
-					| ((int) (Math.random() * (100000)) + 1) + (int) (Math.random() * (8191))) % (100000) + 1);
+					| ((int) (Math.random() * (100000))) + (int) (Math.random() * (8191))) % (num_items));
 		}
 
 	}
