@@ -35,6 +35,42 @@ public class Warehouse implements DatabaseConstants {
 		this.w_stocks = new Hashtable<Integer, Stock>() ;
 	}
 	
+	//Copy Constructor
+	public Warehouse(Warehouse w) {
+		
+		this(w.w_id);
+		
+		this.w_name = w.w_name;
+		this.w_street1 = w.w_street1;
+		this.w_street2 = w.w_street2;
+		this.w_city = w.w_city;
+		this.w_state = w.w_state;
+		this.w_zip = w.w_zip;
+		this.w_tax = w.w_tax;
+		this.w_ytd = w.w_ytd;
+		
+		
+		this.w_districts.putAll(w.w_districts);
+		
+	}
+	
+	public void Update(Warehouse w) {
+		
+		
+		this.w_name = w.w_name;
+		this.w_street1 = w.w_street1;
+		this.w_street2 = w.w_street2;
+		this.w_city = w.w_city;
+		this.w_state = w.w_state;
+		this.w_zip = w.w_zip;
+		this.w_tax = w.w_tax;
+		this.w_ytd = w.w_ytd;
+		
+		
+		this.w_districts.putAll(w.w_districts);
+		
+	}
+	
 	public Hashtable<Integer, District> populate_district(int num) {
 		// If we want to avoid the creation in cascade of the instances (otherwise, put in constructor)
 		for (int i = 0; i < num; i++) {

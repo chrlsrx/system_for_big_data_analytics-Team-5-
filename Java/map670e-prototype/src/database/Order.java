@@ -44,6 +44,13 @@ public class Order {
 	public String toString() {
 		return "Order [o_id=" + o_id + ", o_c_id=" + o_c_id + ", o_d_id=" + o_d_id + ", o_w_id=" + o_w_id + "]";
 	}
+	
+	public Order(Order o) {
+		
+		this(o.o_id, o.o_c_id, o.o_d_id, o.o_w_id);
+	
+		
+	}
 
 	@Override
 	public boolean equals(Object obj) {

@@ -59,6 +59,58 @@ public class Customer implements DatabaseConstants{
 		this.c_delivry_cnt = (int)Math.random()*1000;
 		this.c_data = information[(int) Math.random()*3] ;
 	}
+	
+	public Customer(Customer c) {
+		
+		this(c.c_id, c.c_d_id, c.c_w_id);
+		
+		this.c_first = c.c_first;		
+		this.c_middle = c.c_middle;	
+		this.c_last = c.c_last ;		
+		this.c_street1 = c.c_street1 ;	
+		this.c_street2 = c.c_street2 ;		
+		this.c_city = c.c_city;			
+		this.c_state = c.c_state;
+		this.c_zip = c.c_zip;			
+		this.c_phone = c.c_phone ;		
+		this.c_since = c.c_since ;
+		this.c_credit = c.c_credit ;		
+		this.c_credit_lim = c.c_credit_lim;
+		this.c_discount = c.c_discount;
+		this.c_balance = c.c_balance ;
+		this.c_ytd_payment = c.c_ytd_payment;
+		this.c_payment_cnt = c.c_payment_cnt;
+		this.c_delivry_cnt = c.c_delivry_cnt;
+		this.c_data = c.c_data;	
+		this.c_orders = new Hashtable<Integer, Order>() ;
+		this.c_orders.putAll(c.c_orders);
+		
+	}
+	
+	public  void Update(Customer c) {
+		
+		this.c_first = c.c_first;		
+		this.c_middle = c.c_middle;	
+		this.c_last = c.c_last ;		
+		this.c_street1 = c.c_street1 ;	
+		this.c_street2 = c.c_street2 ;		
+		this.c_city = c.c_city;			
+		this.c_state = c.c_state;
+		this.c_zip = c.c_zip;			
+		this.c_phone = c.c_phone ;		
+		this.c_since = c.c_since ;
+		this.c_credit = c.c_credit ;		
+		this.c_credit_lim = c.c_credit_lim;
+		this.c_discount = c.c_discount;
+		this.c_balance = c.c_balance ;
+		this.c_ytd_payment = c.c_ytd_payment;
+		this.c_payment_cnt = c.c_payment_cnt;
+		this.c_delivry_cnt = c.c_delivry_cnt;
+		this.c_data = c.c_data;	
+		
+		this.c_orders.putAll(c.c_orders);
+		
+	}
 
 	@Override
 	public int hashCode() {

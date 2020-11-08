@@ -33,6 +33,11 @@ public class Order_Line implements DatabaseConstants{
 		this.ol_dist_info = information[(int) Math.random()*3];
 	}
 
+	public Order_Line(Order_Line ol) {
+		
+		this(ol.ol_o_id, ol.ol_d_id, ol.ol_w_id, ol.ol_number);
+		
+	}
 	@Override
 	public int hashCode() {
 		return Objects.hash(ol_d_id, ol_number, ol_o_id, ol_w_id);

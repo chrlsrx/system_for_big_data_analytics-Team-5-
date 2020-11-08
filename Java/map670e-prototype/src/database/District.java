@@ -48,6 +48,42 @@ public class District implements DatabaseConstants {
 		return this.d_clients ;
 	}
 	
+	public District(District d) {
+		
+		this(d.d_id, d.d_w_id);
+		
+		this.d_name = d.d_name ;		
+		this.d_street1 = d.d_street1 ;	
+		this.d_street2 = d.d_street2 ;
+		this.d_city = d.d_city ;		
+		this.d_state = d.d_state ;	
+		this.d_zip = d.d_zip;	
+		this.d_tax = d.d_tax ;			
+		this.d_ytd = d.d_ytd ;			
+		this.d_next_o_id = d.d_next_o_id ;	
+		
+		this.d_clients.putAll(d.d_clients);
+		
+	}
+	
+	public  void Update(District d) {
+		
+		
+		this.d_name = d.d_name ;		
+		this.d_street1 = d.d_street1 ;	
+		this.d_street2 = d.d_street2 ;
+		this.d_city = d.d_city ;		
+		this.d_state = d.d_state ;	
+		this.d_zip = d.d_zip;	
+		this.d_tax = d.d_tax ;			
+		this.d_ytd = d.d_ytd ;			
+		this.d_next_o_id = d.d_next_o_id ;	
+		
+		
+		this.d_clients.putAll(d.d_clients);
+		
+	}
+	
 
 	public double get_d_tax() {
 		return this.d_tax;

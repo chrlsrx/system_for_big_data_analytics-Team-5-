@@ -18,6 +18,13 @@ public class NewOrder {
 	public int hashCode() {
 		return Objects.hash(no_d_id, no_o_id, no_w_id);
 	}
+	
+	//Copy Constructor
+	public NewOrder(NewOrder no) {
+		
+		this(no.no_o_id, no.no_d_id, no.no_w_id);
+		
+	}
 
 	@Override
 	public boolean equals(Object obj) {
