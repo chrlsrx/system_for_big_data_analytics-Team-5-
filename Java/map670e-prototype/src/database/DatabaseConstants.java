@@ -7,7 +7,7 @@ public interface DatabaseConstants {
 	 * 
 	 */
 	
-	int num_warehouses = 1 ;
+	int num_warehouses = 1 ; // Only tried with one warehouse
 	int num_districts = 10 ;
 	int num_customers = 30000 ;
 

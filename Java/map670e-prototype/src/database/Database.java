@@ -1,9 +1,6 @@
 package database;
 
-import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Map.Entry;
 import java.util.Set;
 
 public class Database implements DatabaseConstants {

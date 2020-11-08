@@ -1,6 +1,5 @@
 package database;
 
-import java.util.HashMap;
 import java.util.Objects;
 
 public class Stock implements DatabaseConstants{

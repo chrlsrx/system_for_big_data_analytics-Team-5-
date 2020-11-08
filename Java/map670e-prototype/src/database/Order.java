@@ -1,7 +1,6 @@
 package database;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Objects;
 
 public class Order {
