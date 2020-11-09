@@ -19,6 +19,7 @@ public class Scheduler {
 		this.cnt_aborts = 0 ;
 	}
 	
+	
 	public synchronized void setTransactions(Vector<NewOrderTransactionLock> transactions) {
 		this.transactions = transactions ;
 		this.cnt_aborts = 0 ;

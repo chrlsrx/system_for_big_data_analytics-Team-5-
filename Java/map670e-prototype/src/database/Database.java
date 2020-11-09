@@ -80,7 +80,7 @@ public class Database implements DatabaseConstants {
 	}
 
 	public void Update(Database db) {
-
+			System.out.println("updating db");
 		for (Integer key : this.warehouses.keySet()) {
 			Warehouse obj = this.warehouses.get(key);
 			obj.Update(db.warehouses.get(key));
