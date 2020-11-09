@@ -1,11 +1,12 @@
 package database;
 
 import java.util.HashMap;
+import java.util.Objects;
 
-public class Stock {
+public class Stock implements DatabaseConstants{
 	private int s_i_id;
 	private int s_w_id;
-	private float s_quantity;
+	private double s_quantity;
 	private String s_dist01;
 	private String s_dist02;
 	private String s_dist03;
@@ -16,45 +17,146 @@ public class Stock {
 	private String s_dist08;
 	private String s_dist09;
 	private String s_dist10;
-	private float s_ytd;
-	private float s_order_cnt;
-	private float s_remote_cnt;
+	private double s_ytd;
+	private double s_order_cnt;
+	private double s_remote_cnt;
 	private String s_data;
-	private static HashMap<Integer,Integer> stocks;
+	//private static HashMap<Integer,Integer> stocks;
+	
 	public Stock(int i, int j)
 	{
 		this.s_i_id = i;
 		this.s_w_id = j;
-		this.stocks.put(i,j);
+		//this.stocks.put(i,j);
+		
+		this.s_quantity = Math.random()*1000;
+		this.s_dist01 = districts[(int) Math.random()*10];
+		this.s_dist02 = districts[(int) Math.random()*10];
+		this.s_dist03 = districts[(int) Math.random()*10];
+		this.s_dist04 = districts[(int) Math.random()*10];
+		this.s_dist05 = districts[(int) Math.random()*10];
+		this.s_dist06 = districts[(int) Math.random()*10];
+		this.s_dist07 = districts[(int) Math.random()*10];
+		this.s_dist08 = districts[(int) Math.random()*10];
+		this.s_dist09 = districts[(int) Math.random()*10];
+		this.s_dist10 = districts[(int) Math.random()*10];
+		this.s_ytd = Math.random()*100000;
+		this.s_order_cnt = Math.random()*1000;
+		this.s_remote_cnt = Math.random()*1000;
+		this.s_data = information[(int) Math.random()*3];
+		
+		
+		
 	}
 	
 	public void Update(Stock s) {
 		
-			//We don't use getters, maybe we need
-			this.s_i_id = s.s_i_id;
-			this.s_w_id = s.s_w_id;
-			this.s_quantity = s.s_quantity;
-			this.s_dist01 = s.s_dist01;
-			this.s_dist02 = s.s_dist02;
-			this.s_dist03 = s.s_dist03;
-			this.s_dist04 = s.s_dist04;
-			this.s_dist05 = s.s_dist05;
-			this.s_dist06 = s.s_dist06;
-			this.s_dist07 = s.s_dist07;
-			this.s_dist08 = s.s_dist08;
-			this.s_dist09 = s.s_dist09;
-			this.s_dist10 = s.s_dist10;
-			this.s_ytd=s.s_ytd;
-			this.s_order_cnt=s.s_order_cnt;
-			this.s_remote_cnt=s.s_remote_cnt;
-			this.s_data=s.s_data;
-	}
+		//We don't use getters, maybe we need
+		this.s_i_id = s.s_i_id;
+		this.s_w_id = s.s_w_id;
+		this.s_quantity = s.s_quantity;
+		this.s_dist01 = s.s_dist01;
+		this.s_dist02 = s.s_dist02;
+		this.s_dist03 = s.s_dist03;
+		this.s_dist04 = s.s_dist04;
+		this.s_dist05 = s.s_dist05;
+		this.s_dist06 = s.s_dist06;
+		this.s_dist07 = s.s_dist07;
+		this.s_dist08 = s.s_dist08;
+		this.s_dist09 = s.s_dist09;
+		this.s_dist10 = s.s_dist10;
+		this.s_ytd=s.s_ytd;
+		this.s_order_cnt=s.s_order_cnt;
+		this.s_remote_cnt=s.s_remote_cnt;
+		this.s_data=s.s_data;
+}
 	//Copy Constructor
 	public Stock(Stock s) {
-		
-		this(s.s_i_id, s.s_w_id);
-		
-		
+	
+	this(s.s_i_id, s.s_w_id);
+	
+	
 	}
 
+	
+
+	public double get_s_quantity()
+	{
+		return this.s_quantity;
+	}
+	public String get_s_data()
+	{
+		return this.s_data;
+	}
+	public String get_s_id(int d_id)
+	{
+		String ch = "";
+		switch(d_id) {
+		case 1:
+			ch = s_dist01;
+			break;
+		case 2:
+			ch = s_dist02;
+			break;
+		case 3:
+			ch = s_dist03;
+			break;
+		case 4:
+			ch = s_dist04;
+			break;
+		case 5:
+			ch = s_dist05;
+			break;
+		case 6:
+			ch = s_dist06;
+			break;
+		case 7:
+			ch = s_dist07;
+			break;
+		case 8:
+			ch = s_dist08;
+			break;
+		case 9:
+			ch = s_dist09;
+			break;
+		case 10:
+			ch = s_dist10;
+			break;
+		
+		
+		}
+		return ch;
+			
+	}
+	public void change_s_ytd(double c)
+	{
+		this.s_ytd += 1;
+	}
+
+	public void change_s_order_cnt(double s)
+	{
+		this.s_order_cnt += s;
+	}
+	public void change_s_remote_cnt(double d)
+	{
+		this.s_remote_cnt+=d;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(s_i_id,s_w_id) ;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof Stock))
+			return false;
+		Stock other = (Stock) obj;
+		return s_i_id == other.s_i_id && s_w_id == other.s_w_id;
+	}
+	
+	
 }
+

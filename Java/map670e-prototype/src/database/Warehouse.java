@@ -1,22 +1,10 @@
 package database;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Objects;
-
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 
 public class Warehouse implements DatabaseConstants {
 	
-	private static ArrayList<String> Strings = new ArrayList<String>(Arrays.asList("w_street2", "w_street1", "w_street2", "w_city", "w_state", "w_zip"));
-	// The warehouse id is useless : already in district
-	private static ArrayList<String> Integers = new ArrayList<String>(Arrays.asList(""));
-	private static ArrayList<String> Reals = new ArrayList<String>(Arrays.asList("w_tax", "w_ytd"));
-	
-
 	private final int w_id ;
 	private String w_name ;		// useless ? t20
 	private String w_street1 ;	// useless ? t20
@@ -26,9 +14,8 @@ public class Warehouse implements DatabaseConstants {
 	private String w_zip ;		// useless ? t9
 	private double w_tax ;				// useless ?
 	private double w_ytd ;				// useless ?
-	private HashMap<Integer, District> w_districts ;
-	
-
+	private Hashtable<Integer, District> w_districts ;
+	private Hashtable<Integer, Stock> w_stocks ;
 	
 	public Warehouse(int w_id) {
 		
@@ -42,11 +29,11 @@ public class Warehouse implements DatabaseConstants {
 		this.w_state = Integer.toString((int) Math.random() * 99) ;
 		this.w_zip = "9512" + Integer.toString((int) Math.random() * 9) ;
 		this.w_tax = w_tax_min + Math.random() * (w_tax_max - w_tax_min);
-		this.w_ytd = Math.random() * 365; ;
+		this.w_ytd = Math.random() * 365; 
 		
-		this.w_districts = new HashMap<Integer, District>() ;
+		this.w_districts = new Hashtable<Integer, District>() ;
+		this.w_stocks = new Hashtable<Integer, Stock>() ;
 	}
-	
 	
 	//Copy Constructor
 	public Warehouse(Warehouse w) {
@@ -84,66 +71,7 @@ public class Warehouse implements DatabaseConstants {
 		
 	}
 	
-	@SuppressWarnings("all")
-	public void Update(String[] args) {
-		
-		    
-
-		    
-		    for(String arg : args) {
-				
-		    	
-				//Here the assumption is that args is an array of string of the form
-				//key:value, where key is the attribute name and value is its value.
-				String[] keyValue = arg.split(":");
-				
-				String code = "";
-				
-				
-
-				//This line complies the following code
-				//it casts the value of an attribute based on its type
-				
-				if(Strings.contains(keyValue[0])) {
-					code = String.format("this.%s = \"%s\";", keyValue[0], keyValue[1]);
-					
-				}
-				else if (Integers.contains(keyValue[0]))
-				{
-					code = String.format("this.%s = parseInt(\"%s\");", keyValue[0], keyValue[1]);
-
-				}
-				else if (Reals.contains(keyValue[0]))
-				{
-					code = String.format("this.%s = parseFloat(\"%s\");", keyValue[0], keyValue[1]);
-
-				}
-				
-
-				
-
-				ScriptEngineManager mgr = new ScriptEngineManager();
-			    ScriptEngine engine = mgr.getEngineByName("JavaScript");
-			    
-			    try {
-					System.out.println(engine.eval(code));
-				} catch (ScriptException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			    
-			   
-
-			   
-			    
-		    }
-			
-			
-
-		}
-	
-	
-	public HashMap<Integer, District> populate_district(int num) {
+	public Hashtable<Integer, District> populate_district(int num) {
 		// If we want to avoid the creation in cascade of the instances (otherwise, put in constructor)
 		for (int i = 0; i < num; i++) {
 			District district = new District(i, this.w_id) ;
@@ -151,34 +79,63 @@ public class Warehouse implements DatabaseConstants {
 		}
 		return this.w_districts ;
 	}
-
-	//w_id is the primary key
-	@Override
-	public int hashCode() {
-		return Objects.hash(w_id);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
+	
+	public Hashtable<Integer, Stock> populate_stock(int num) {
+		// If we want to avoid the creation in cascade of the instances (otherwise, put in constructor)
+		for (int i = 0; i < num; i++) {
+			Stock stock = new Stock(i, this.w_id) ;
+			this.w_stocks.put(stock.hashCode(), stock) ; 
 		}
-		if (!(obj instanceof Warehouse)) {
-			return false;
-		}
-		Warehouse other = (Warehouse) obj;
-		return w_id == other.w_id;
+		return this.w_stocks ;
 	}
 	
-	/* TO delete if not needed, only used as an example */
-	@Override
-	public String toString() {
-		return "Warehouse [w_id=" + w_id + ", w_name=" + w_name + ", w_street1=" + w_street1 + ", w_street2="
-				+ w_street2 + ", w_city=" + w_city + ", w_state=" + w_state + ", w_zip=" + w_zip + ", w_tax=" + w_tax
-				+ ", w_ytd=" + w_ytd + ", w_districts=" + w_districts + "]";
+	public Hashtable<Integer, Item> populate_item(int num) {
+		Hashtable<Integer, Item> items = new Hashtable<Integer, Item>() ;
+		for (int i = 0; i < num; i++) {
+			Item item = new Item(i) ;
+			items.put(item.hashCode(), item) ; 
+		}
+		return items ;
 	}
 	
+
 	public void setStreet1(String stg) {
 		this.w_street1 = stg ;
 	}
+	public double get_w_tax() 
+	{
+		return this.w_tax;
+	}
+	
+	public int getId() 
+	{
+		return this.w_id;
+	}
+	
+	//w_id is the primary key
+		@Override
+		public int hashCode() {
+			return Objects.hash(w_id);
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (!(obj instanceof Warehouse)) {
+				return false;
+			}
+			Warehouse other = (Warehouse) obj;
+			return w_id == other.w_id;
+		}
+		
+		/* TO delete if not needed, only used as an example */
+		@Override
+		public String toString() {
+			return "Warehouse [w_id=" + w_id + ", w_name=" + w_name + ", w_street1=" + w_street1 + ", w_street2="
+					+ w_street2 + ", w_city=" + w_city + ", w_state=" + w_state + ", w_zip=" + w_zip + ", w_tax=" + w_tax
+					+ ", w_ytd=" + w_ytd + ", w_districts=" + w_districts + "]";
+		}
+	
 }

@@ -21,8 +21,8 @@ public class Write extends Operation {
 	 * 		-> but make sure to Xlock it before, since it's a disguised write ;
 	 */
 	
-	private Object target ;
-	private Types target_type ;
+	protected Object target ;
+	protected Types target_type ;
 	
 	public Write(int id, Database db, Object target, Types target_type) {
 		super(id, db) ;
@@ -30,7 +30,7 @@ public class Write extends Operation {
 		this.target_type = target_type ;
 	}
 	
-	public boolean apply() {
+	public synchronized boolean apply() {
 		this.has_applied = this.db.setObject(this.target, this.target_type) ;
 		return this.has_applied ;
 	}
